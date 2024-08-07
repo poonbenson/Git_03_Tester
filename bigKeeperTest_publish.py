@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_202403012c'
+winTitlePrefix = 'BigKeeper_20240807'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -10,6 +10,7 @@ from PySide2.QtGui import *
 
 # To import standard modules
 import subprocess, os, sys, time, webbrowser, pathlib
+print('PYTHON version : {}'.format(sys.version))
 
 
 if sys.version_info.major >= 3:
@@ -26,6 +27,9 @@ import xml.etree.ElementTree as ET
 sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\BigKeeperGlob\wip\published')
 import bigCodingAssistant_publish
 CurrentSoftwareName = bigCodingAssistant_publish.tool().bigCheckSoftware()
+
+print('PYTHON version : {}'.format(sys.version))
+
 
 import bigKeeperInfoGlobal_published
 getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
@@ -3033,16 +3037,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                 print('theKeepLibPath              :{}'.format(theKeepLibPath))
 
-
-
-                ###
-
                 if  len(theKeepLibPath.parents) < 13:
                     print('No. of folders level less than pipeline structure, skipped.\n')
                     pass
                 else:
 
                     if os.path.exists(theKeepLibPath.parents[-13]):
+
+                        print('theKeepLibPath.parents[-13] :{}'.format(theKeepLibPath.parents[-13]))
 
                         if os.path.normpath(theKeepLibPath.parents[-11]) != os.path.normpath(theKeepTaskPath) :   #To exclude from same TASK. Becoz artist may readIn previous nuke render output to QC.
                             print('theKeepTaskPath             :{}'.format(theKeepTaskPath))
