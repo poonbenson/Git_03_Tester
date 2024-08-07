@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240807'
+winTitlePrefix = 'BigKeeper_20240807b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2654,7 +2654,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                     if showAskPath:
                         saveFullPath = None
-                        saveFullPath = self.askSaveFile(saveNameCurrentTimeStamp)
+                        print(os.path.join(self.selProjRootPath,saveNameCurrentTimeStamp))
+                        saveFullPath = self.askSaveFile(os.path.join(self.selProjRootPath,saveNameCurrentTimeStamp))
                         saveDirPath = os.path.dirname(saveFullPath)
                     else:
                         saveFullPath = os.path.join(saveDirPath, saveNameCurrentTimeStamp + '.txt')
