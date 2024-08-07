@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v134.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v135.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -236,26 +236,23 @@ class Ui_MainWindow(object):
         self.tabCmd.setObjectName(u"tabCmd")
         self.pushButton_sortoutfile = QPushButton(self.tabCmd)
         self.pushButton_sortoutfile.setObjectName(u"pushButton_sortoutfile")
-        self.pushButton_sortoutfile.setGeometry(QRect(260, 30, 75, 23))
+        self.pushButton_sortoutfile.setGeometry(QRect(230, 30, 81, 23))
         self.label_17 = QLabel(self.tabCmd)
         self.label_17.setObjectName(u"label_17")
         self.label_17.setGeometry(QRect(0, 10, 151, 16))
         self.label_17.setTextFormat(Qt.PlainText)
         self.pushButton_exeDel = QPushButton(self.tabCmd)
         self.pushButton_exeDel.setObjectName(u"pushButton_exeDel")
-        self.pushButton_exeDel.setGeometry(QRect(70, 180, 31, 23))
+        self.pushButton_exeDel.setGeometry(QRect(320, 60, 31, 23))
         self.label_18 = QLabel(self.tabCmd)
         self.label_18.setObjectName(u"label_18")
-        self.label_18.setGeometry(QRect(0, 30, 211, 16))
+        self.label_18.setGeometry(QRect(20, 30, 201, 16))
         self.label_19 = QLabel(self.tabCmd)
         self.label_19.setObjectName(u"label_19")
-        self.label_19.setGeometry(QRect(0, 180, 71, 16))
-        self.pushButton_sortoutfile_1a = QPushButton(self.tabCmd)
-        self.pushButton_sortoutfile_1a.setObjectName(u"pushButton_sortoutfile_1a")
-        self.pushButton_sortoutfile_1a.setGeometry(QRect(260, 60, 121, 23))
-        self.label_23 = QLabel(self.tabCmd)
-        self.label_23.setObjectName(u"label_23")
-        self.label_23.setGeometry(QRect(10, 60, 231, 16))
+        self.label_19.setGeometry(QRect(20, 60, 201, 16))
+        self.pushButton_exeMove = QPushButton(self.tabCmd)
+        self.pushButton_exeMove.setObjectName(u"pushButton_exeMove")
+        self.pushButton_exeMove.setGeometry(QRect(230, 60, 81, 23))
         self.tabWidget_2.addTab(self.tabCmd, "")
         self.tabLauncher = QWidget()
         self.tabLauncher.setObjectName(u"tabLauncher")
@@ -310,7 +307,10 @@ class Ui_MainWindow(object):
         self.pushButton_hieroPlayerOther.setGeometry(QRect(290, 60, 16, 31))
         self.pushButton_LaunchCpuCoreController = QPushButton(self.groupBox)
         self.pushButton_LaunchCpuCoreController.setObjectName(u"pushButton_LaunchCpuCoreController")
-        self.pushButton_LaunchCpuCoreController.setGeometry(QRect(50, 160, 181, 31))
+        self.pushButton_LaunchCpuCoreController.setGeometry(QRect(50, 160, 91, 31))
+        self.pushButton_LaunchGpuCoreController = QPushButton(self.groupBox)
+        self.pushButton_LaunchGpuCoreController.setObjectName(u"pushButton_LaunchGpuCoreController")
+        self.pushButton_LaunchGpuCoreController.setGeometry(QRect(140, 160, 91, 31))
         self.pushButton_LaunchNuke13_0_v2.raise_()
         self.pushButton_LaunchNukeStudio13_0_v2.raise_()
         self.pushButton_LaunchNukeX13_0_v2.raise_()
@@ -327,6 +327,7 @@ class Ui_MainWindow(object):
         self.pushButton_LaunchHieroPlayer.raise_()
         self.pushButton_hieroPlayerOther.raise_()
         self.pushButton_LaunchCpuCoreController.raise_()
+        self.pushButton_LaunchGpuCoreController.raise_()
 
         self.verticalLayout_11.addWidget(self.groupBox)
 
@@ -817,7 +818,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(4)
+        self.tabWidget_2.setCurrentIndex(5)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -902,12 +903,11 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.pushButton_exeDel.setText(QCoreApplication.translate("MainWindow", u"Del", None))
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"1) Sort Out by Keeping Versions & Days :", None))
-        self.label_19.setText(QCoreApplication.translate("MainWindow", u"2) Execut Del", None))
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"2) Execut Move / Del", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_sortoutfile_1a.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_sortoutfile", None))
+        self.pushButton_exeMove.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_sortoutfile", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_sortoutfile_1a.setText(QCoreApplication.translate("MainWindow", u"Import Text File(s)", None))
-        self.label_23.setText(QCoreApplication.translate("MainWindow", u"A) Extract ReadNode file path to Del / Keep :", None))
+        self.pushButton_exeMove.setText(QCoreApplication.translate("MainWindow", u"Move", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabCmd), QCoreApplication.translate("MainWindow", u"Cmd", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Studio Dedicated Launcher:", None))
 #if QT_CONFIG(tooltip)
@@ -974,7 +974,12 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.pushButton_LaunchCpuCoreController.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_LaunchCpuCoreController", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_LaunchCpuCoreController.setText(QCoreApplication.translate("MainWindow", u"_Deadline CPU Core\n"
+        self.pushButton_LaunchCpuCoreController.setText(QCoreApplication.translate("MainWindow", u"Deadline CPU\n"
+"Control", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_LaunchGpuCoreController.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_LaunchCpuCoreController", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_LaunchGpuCoreController.setText(QCoreApplication.translate("MainWindow", u"Deadline GPU\n"
 "Controller", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabLauncher), QCoreApplication.translate("MainWindow", u"Launcher", None))
 #if QT_CONFIG(tooltip)

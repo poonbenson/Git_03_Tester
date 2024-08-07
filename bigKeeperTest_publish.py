@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240807b'
+winTitlePrefix = 'BigKeeper_20240807c'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -296,7 +296,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_dailyFolder2.clicked.connect(self.launchDailyFolder)
 
         self.pushButton_LaunchCpuCoreController.clicked.connect(lambda: self.deadlineCoreOverride())
-        self.pushButton_LaunchCpuCoreController.setText('Deadline Override CPU Core\n Controller')
+        self.pushButton_LaunchCpuCoreController.setText('Deadline CPU\nController')
+
 
 
         self.pushButton_shotlist.clicked.connect(self.launchShotlist)
@@ -414,7 +415,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         #Cmd Tab
         self.pushButton_sortoutfile.clicked.connect(lambda: self.cleanUpCompOutput(self.listWidget_1.selectedItems()))
-        self.pushButton_exeDel.clicked.connect(lambda: self.cleanUpDelAction())
+        self.pushButton_exeDel.clicked.connect(lambda: self.cleanUpDelAction('delAction'))
+        self.pushButton_exeMove.clicked.connect(lambda: self.cleanUpDelAction('moveAction'))
+
+
         # Define a list containing the full paths of Nuke script files
         script_files = [
             r"N:\mnt\job\24901BigPicture_TestProj\WorkingFile\BigPicture24_TestProj\scenes\bensonSeq\bkpy0010\components\comp\wip\bkpy0010_comp_wip_v0017.nk",
@@ -590,9 +594,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num6.setText('UpReadVer')
         self.pushButton_num9.clicked.connect(lambda: self.cleanUpDelAction())
         self.pushButton_num9.setText('cleanUpDelAction')
-        self.pushButton_num8.clicked.connect(lambda: self.openScheduleLink())
-        self.pushButton_num8.setText('openScheduleLink')
         '''
+
+        self.pushButton_num8.clicked.connect(lambda: self.cleanUpDelAction('moveAction'))
+        self.pushButton_num8.setText('moveAction')
+
         self.pushButton_num7.clicked.connect(lambda: self.listWidget_1_receivedListB())
         self.pushButton_num7.setText('listMulti')
 
@@ -2705,10 +2711,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                         print()
 
+
+
                         msgBox = QMessageBox()
                         msgBox.setStandardButtons(QMessageBox.NoButton)
                         msgBox.show()
 
+                        QApplication.processEvents()
                         for i in toBeDelList:
                             print(i)
                             size = self.cleanUpCheckFolderSize(i)
@@ -3340,8 +3349,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-    def cleanUpDelAction(self):
+    def cleanUpDelAction(self, inAction):
+        #inAction is to decide : delAction / moveAction
+
+
         print('\ndef >>>>> cleanUpDelAction')
+
 
         import shutil
 
@@ -3350,7 +3363,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print(theFile)
         print(type(theFile))
         '''
+
+
         answerFolder = QInputDialog.getText(self, 'Input Folder Path', 'Please input the folder path containing ALL toBeDel_xxxxxxx.txt\n\n\n\n***** this is DELETE action. *****\n\n\n',QLineEdit.Normal)
+
         print(answerFolder[0])
         print(type(answerFolder[0]))
 
@@ -3358,20 +3374,38 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         counter = 0
         delConfirm = False
         delToken = False
+        moveConfirm = False
+        moveToken = False
 
-        # create _done directory to store the .txt
-        doneFolder = os.path.join(answerFolder[0], '_done')
-        if not os.path.exists(doneFolder):
-            os.mkdir(doneFolder)
-            print(doneFolder ,  " --- Created ")
+        while delToken == False and moveToken == False:
 
-        while delToken == False:
-            inputCheck = QInputDialog.getText(self, 'Double Confirmation', 'If you confirm to batch delete all files.\n\n input the following correctly:\n\n"Confirm to delete a lot of files."\n\n\n',QLineEdit.Normal)
-            if inputCheck[0] == 'Confirm to delete a lot of files.':
-                delConfirm = True
-                delToken = True
+            if inAction == 'delAction':
+                inputCheck = QInputDialog.getText(self, 'Double Confirmation', 'If you confirm to batch delete all files.\n\n input the following correctly:\n\n"Delete, confirm to delete a lot of files."\n\n\n',QLineEdit.Normal)
+                if inputCheck[0] == 'Delete, confirm to delete a lot of files.':
+                    delConfirm = True
+                    delToken = True
+            elif inAction == 'moveAction':
 
-        if delConfirm == True:
+                moveDestPath, null = QInputDialog.getText(self, 'Input Destination Folder Path', 'Please input the move-destination folder path:',QLineEdit.Normal)
+                moveDestPath = os.path.normpath(moveDestPath)
+                print('moveDestPath :{}'.format(moveDestPath))
+
+
+                inputCheck = QInputDialog.getText(self, 'Double Confirmation', 'If you confirm to batch move all files.\n\n input the following correctly:\n\n"Move, confirm to move all."\n\n\n',QLineEdit.Normal)
+                if inputCheck[0] == 'Move, confirm to move all.':
+                    moveConfirm = True
+                    moveToken = True
+
+
+        if delConfirm == True or moveConfirm == True:
+
+            # create _done directory to store the .txt
+            doneFolder = os.path.join(answerFolder[0], '_done')
+            if not os.path.exists(doneFolder):
+                os.mkdir(doneFolder)
+                print(doneFolder ,  " --- Created ")
+
+
             for file in allFiles:
 
                 theFile = os.path.join(answerFolder[0], file)
@@ -3380,6 +3414,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 if theFile.endswith('.txt'):
                     f = open(theFile, 'r')
                     linePaths = []
+                    QApplication.processEvents()
                     for line in f:
                         if not line.startswith('<bigK_header>') or not line.startswith('< KEEP >'):
                             if line.startswith('< del* >'):
@@ -3387,8 +3422,28 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                 targetPath = line.lstrip('< del* >').rstrip('\n')
                                 linePaths.append(targetPath)
                                 print(str(counter) + 'line :' + targetPath)
-                                #ref : https://thispointer.com/python-how-to-delete-a-directory-recursively-using-shutil-rmtree/
-                                shutil.rmtree(targetPath, ignore_errors=True)
+
+                                if delConfirm == True:
+                                    #ref : https://thispointer.com/python-how-to-delete-a-directory-recursively-using-shutil-rmtree/
+                                    shutil.rmtree(targetPath, ignore_errors=True)
+
+                                elif moveConfirm == True:
+                                    QApplication.processEvents()
+                                    combineMoveDestPath = os.path.join(moveDestPath, targetPath.replace(':', '_', 1))
+                                    print(combineMoveDestPath)
+                                    QApplication.processEvents()
+
+                                    #option A, run by shutil. but the UI freeze without repond
+                                    shutil.move(targetPath, combineMoveDestPath)
+
+                                    #option B, run by cmd, want to see respond
+                                    #to be enhance
+
+                                    QApplication.processEvents()
+                                    pass
+
+                        QApplication.processEvents()
+
                     f.close()
 
                     shutil.move(theFile, doneFolder)
