@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240808'
+winTitlePrefix = 'BigKeeper_20240808b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -1159,8 +1159,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     # To avoid error message when launchSceneUpdate on a v0000
                     try:
                         #disabled this upon Apple and Sally request for a heavy shot.
-                        #nuke.onScriptLoad(self.launchSceneUpdate())
-                        QMessageBox.information(self, 'Auto Scene Update', 'Check if Scene Update is needed ?')
+                        nuke.onScriptLoad(self.launchSceneUpdate())
+                        #QMessageBox.information(self, 'Auto Scene Update', 'Check if Scene Update is needed ?')
                     except:
                         pass
 
