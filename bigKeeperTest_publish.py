@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240808b'
+winTitlePrefix = 'BigKeeper_20240808c'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -297,6 +297,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.pushButton_LaunchCpuCoreController.clicked.connect(lambda: self.deadlineCoreOverride())
         self.pushButton_LaunchCpuCoreController.setText('Deadline CPU\nController')
+        self.pushButton_LaunchGpuCoreController.clicked.connect(lambda: self.deadlineCoreOverrideGPU())
+        self.pushButton_LaunchGpuCoreController.setText('Deadline GPU\nController')
 
 
 
@@ -620,6 +622,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         subprocess.call(r'python N:\bpPipeline\miscScriptTools\deadline_cmd\get_cmd_output_deadlineInfo_publish.py', shell=True)
         #os.system(r'N:\bpPipeline\miscScriptTools\deadline_cmd\get_cmd_output_deadlineInfo_publish.py')
 
+
+    def deadlineCoreOverrideGPU(self):
+        subprocess.call(r'python N:\bpPipeline\miscScriptTools\deadline_cmd\get_cmd_output_deadlineInfo_Gpu_publish.py', shell=True)
 
 
 
