@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240807c'
+winTitlePrefix = 'BigKeeper_20240808'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -3435,9 +3435,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                                     #option A, run by shutil. but the UI freeze without repond
                                     shutil.move(targetPath, combineMoveDestPath)
+                                    QApplication.processEvents()
+
 
                                     #option B, run by cmd, want to see respond
                                     #to be enhance
+
+                                    fMove = open(os.path.join(doneFolder, '_LOG.txt'), 'a')
+                                    fMove.writelines(str(line))
+                                    fMove.close()
 
                                     QApplication.processEvents()
                                     pass
