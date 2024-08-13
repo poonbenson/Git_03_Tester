@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240813'
+winTitlePrefix = 'BigKeeper_20240813b'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -1623,10 +1623,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         passToken = False
         while passToken == False:
-            inputCheck = QInputDialog.getText(self, 'New Shot', 'New Shot Name :',QLineEdit.Normal)
+            inputCheck, ok = QInputDialog.getText(self, 'New Shot', 'New Shot Name :',QLineEdit.Normal)
             print(inputCheck[0])
 
-            if inputCheck[0]:
+            if inputCheck[0] and ok:
                 newPath = os.path.join(self.selProjScnShotPath, inputCheck[0])
 
                 if os.path.isdir(newPath) == True:
@@ -1643,26 +1643,28 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def newShotCreateBatchAction(self):
         print('def >>>>> newShotCreateBatchAction')
 
-        inputFile = QFileDialog.getOpenFileName(self, 'Open file', 'c:\\', 'Text file (*.txt)')
+        # ref: https://www.tutorialspoint.com/pyqt/pyqt_qfiledialog_widget.htm
+        inputFile, ok= QFileDialog.getOpenFileName(self, 'Open file', 'c:\\', 'Text file (*.txt)')
 
-        print(inputFile)
+        if ok:
+            print(inputFile)
 
-        shotNamesList = []
-        f = open(inputFile[0], 'r')
-        for line in f:
-            if line != '\n':
-                shotNamesList.append(line.rstrip('\n'))
+            shotNamesList = []
+            f = open(inputFile[0], 'r')
+            for line in f:
+                if line != '\n':
+                    shotNamesList.append(line.rstrip('\n'))
 
-        f.close()
+            f.close()
 
-        print(shotNamesList)
+            print(shotNamesList)
 
-        for i in shotNamesList:
-            newPath = os.path.join(self.selProjScnShotPath, i)
-            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
-            print(theCmd)
-            os.system(theCmd)
-            self.listWidget_2.addItem(i)
+            for i in shotNamesList:
+                newPath = os.path.join(self.selProjScnShotPath, i)
+                theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
+                print(theCmd)
+                os.system(theCmd)
+                self.listWidget_2.addItem(i)
 
 
 
@@ -1671,10 +1673,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         passToken = False
         while passToken == False:
-            inputCheck = QInputDialog.getText(self, 'New Sequence', 'New Sequence Name :',QLineEdit.Normal)
+            inputCheck, ok = QInputDialog.getText(self, 'New Sequence', 'New Sequence Name :',QLineEdit.Normal)
             print(inputCheck[0])
 
-            if inputCheck[0]:
+            if inputCheck[0] and ok:
                 newPath = os.path.join(self.selProjScnPath, inputCheck[0])
 
                 if os.path.isdir(newPath) == True:
