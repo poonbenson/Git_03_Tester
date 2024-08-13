@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240808c'
+winTitlePrefix = 'BigKeeper_20240813'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -9,7 +9,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 
 # To import standard modules
-import subprocess, os, sys, time, webbrowser, pathlib
+import subprocess, os, sys, time, webbrowser, pathlib, shutil
 print('PYTHON version : {}'.format(sys.version))
 
 
@@ -247,15 +247,25 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.listWidget_1.itemClicked.connect(self.listWidget_2_appear2)
         self.listWidget_1.itemClicked.connect(self.listWidget_1_receivedList)
+        self.listWidget_1.setSortingEnabled(True)
 
         self.listWidget_2.itemClicked.connect(self.listWidget_3_appear)
+        self.listWidget_2.setSortingEnabled(True)
+
         #self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3B_action)
         self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3C_action)
         self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
+        self.listWidget_3.setSortingEnabled(True)
         self.pushButton_listWidget1Refresh.clicked.connect(self.listWidget_1_appear)
 
         self.listWidget_1.setSelectionMode(QListWidget.ExtendedSelection)
 
+        #self.pushButton_newSeq.clicked.connect()
+        #self.pushButton_newShot.clicked.connect()
+        #self.pushButton_newShotBatch.clicked.connect()
+        #self.pushButton_newTask.clicked.connect(self.createShotNewTask_appear)
+        self.pushButton_newTask.clicked.connect(self.newTaskKeywordShow)
+        self.pushButton_newTask.setDisabled(True)
 
         #nukeLabel = self.envRead('NUKE', 'label')
         #mayaLabel = self.envRead('MAYA', 'label')
@@ -355,7 +365,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.initializeNewWIPDialogWindow()
         self.createShotNewTaskUi = createShotNewTaskWindow(parent = self)
         self.prerendKeywordUi = nukeAskKeywordWindow(parent = self)
+        self.newTaskKeywordUi = nukeAskKeywordWindow(parent = self)
         self.initializePrerendKeywordUi()
+        self.initializeNewTaskKeywordUi()
+
+
+        self.pushButton_newSeq.clicked.connect(self.newSequenceCreateAction)
+        self.pushButton_newSeq.setEnabled(True)
+        self.pushButton_newShot.clicked.connect(self.newShotCreateAction)
+        self.pushButton_newShot.setEnabled(False)
+        self.pushButton_newShotBatch.clicked.connect(self.newShotCreateBatchAction)
+        self.pushButton_newShotBatch.setEnabled(False)
 
 
         self.pushButton_scnUpdate.clicked.connect(self.launchSceneUpdate)
@@ -368,7 +388,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_revive.setStyleSheet("background-color:rgb(128,179,179); color:rgb(10, 10, 10)")
         self.pushButton_revive.setEnabled(True)
         self.pushButton_closeNukeScript.clicked.connect(self.pretendCloseNukeScript)
-        self.pushButton_newTask.clicked.connect(self.createShotNewTask_appear)
+
         self.pushButton_getFrameRange.clicked.connect(self.getCurrentFrameInfo)
         self.pushButton_getFrameRange.setStyleSheet("background-color:rgb(128,179,179); color:rgb(10, 10, 10)")
         if in_nuke:
@@ -417,8 +437,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         #Cmd Tab
         self.pushButton_sortoutfile.clicked.connect(lambda: self.cleanUpCompOutput(self.listWidget_1.selectedItems()))
+        self.pushButton_sortoutfile.setEnabled(False)
         self.pushButton_exeDel.clicked.connect(lambda: self.cleanUpDelAction('delAction'))
         self.pushButton_exeMove.clicked.connect(lambda: self.cleanUpDelAction('moveAction'))
+
+
+
 
 
         # Define a list containing the full paths of Nuke script files
@@ -965,7 +989,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     '''
 
     def listWidget_1_appear(self, item):
-        print('\ndef >>>>> listWidget_1_appear')
+        print('\ndef >>>>> listWidget_1_appear ---Sequence')
         print(self.selProj)
         folderList = os.listdir(self.selProjScnPath)
         listSeq = []
@@ -981,6 +1005,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #self.listWidget_2.clear()
         self.listWidget_1.clear()
         self.listWidget_1.addItems(self.list1Entries)
+        self.pushButton_newSeq.setEnabled(True)
+        self.pushButton_newShot.setEnabled(False)
+        self.pushButton_newShotBatch.setEnabled(False)
+
 
 
     def comboBoxAction2(self, item):
@@ -1003,13 +1031,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print('splitPath : {}'.format(splitPath))
             print('splitDrive : {}'.format(splitDrive))
             print('splitTail : {}'.format(splitTail))
-            self.selProjRootPath = os.path.join(splitDrive, os.path.sep, splitTail[1], splitTail[2], splitTail[3])
+            self.selProjRootPath = os.path.normpath(os.path.join(splitDrive, os.path.sep, splitTail[1], splitTail[2], splitTail[3]))
             print('self.selProjRootPath : {}'.format(self.selProjRootPath))
 
 
             print('self.subDict[self.selProjName]:' + self.subDict[self.selProjName]) # eg. kfcPoke
             print('self.subDict[self.selProjPath]:' + self.subDict[self.selProjPath]) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/
-            self.selProjScnPath = os.path.join(self.subDict[self.selProjPath], self.subDict[self.selProjScnCode])
+            self.selProjScnPath = os.path.normpath(os.path.join(self.subDict[self.selProjPath], self.subDict[self.selProjScnCode]))
             print('self.selProjScnPath:' + self.selProjScnPath) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/scenes
             print('self.subDict[self.selProjWipCode]:' + self.subDict[self.selProjWipCode]) # eg. wip
             print('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
@@ -1054,7 +1082,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
     def listWidget_2_appear2(self, item2):
-        print('listWidget_2_appear2')
+        print('listWidget_2_appear2 ---Shot')
 
         #self.printdbug()
 
@@ -1075,10 +1103,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_2.addItems(self.listShot)
         self.locationPath = os.path.join(self.selProjScnPath, item2.text())
         self.lineEdit_Location.setText(self.locationPath)
+        self.pushButton_newTask.setDisabled(True)
+        self.pushButton_newShot.setEnabled(True)
+        self.pushButton_newShotBatch.setEnabled(True)
+        self.pushButton_sortoutfile.setEnabled(True)
 
 
     def listWidget_3_appear(self, item3):
-        print('\ndef >>>>> listWidget_3_appear')
+        print('\ndef >>>>> listWidget_3_appear ---Task')
 
 
 
@@ -1096,6 +1128,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_3.addItems(listTask)
         self.locationPath = os.path.join(self.selProjScnShotPath, item3.text())
         self.lineEdit_Location.setText(self.locationPath)
+        self.pushButton_newTask.setDisabled(False)
 
 
     def listWidget_3C_action(self, item):
@@ -1489,8 +1522,171 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
+    def newTaskKeywordShow(self):
+        print('\ndef >>>>> newTaskKeywordShow')
+
+        #getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
+        #print(getBigKInfo.currentProjWorkPath())
+
+        self.newTaskKeywordUi.comboBox.clear()
+        self.newTaskKeywordUi.lineEdit.clear()
+
+        '''
+        with open(os.path.join(getBigKInfo.currentProjWorkPath(), 'compPrerendPreset.txt')) as file:
+            contents = file.readlines()
+        '''
+        bigKeeperPyIniTemplatePath = r'N:\bpPipeline\bigKeeperPyIni\templateShot\components'
+        contents = os.listdir(bigKeeperPyIniTemplatePath)
+        for folder in contents:
+            if os.path.isdir(os.path.join(bigKeeperPyIniTemplatePath, folder)):
+                pass
+            else:
+                contents.remove(folder)
+
+        print('content: ')
+        print(contents)
+
+        keywords = [""]
+
+        for i in contents:
+            keywords.append(i.replace('\n', ""))
+
+        print(keywords)
+
+        self.newTaskKeywordUi.label.setText('Input a sub-name for sub-folderName and sub-framename :')
+        self.newTaskKeywordUi.comboBox.addItems(keywords)
+
+        self.newTaskKeywordUi.show()
 
 
+
+    def initializeNewTaskKeywordUi(self):
+        print('\ndef >>>>> initializeNewTaskKeywordUi')
+
+        self.newTaskKeywordUi.setWindowTitle('New Task Keyword')
+
+        self.newTaskKeywordUi.pushButton_2.setText('OK')
+        self.newTaskKeywordUi.pushButton_3.setText('Cancel')
+
+        self.newTaskKeywordUi.pushButton_2.clicked.connect(lambda : self.newTaskOKButtonAction(self.newTaskKeywordUi.lineEdit.text()))
+        self.newTaskKeywordUi.pushButton_3.clicked.connect(lambda : self.newTaskKeywordUi.close())
+        self.newTaskKeywordUi.comboBox.activated[str].connect(self.newTaskKeywordAction)
+
+
+    def newTaskKeywordAction(self, item):
+        print('\ndef >>>>> newTaskKeywordAction')
+        print(item)
+
+        self.newTaskKeywordUi.lineEdit.setText(item)
+        keywordLength = len(self.newTaskKeywordUi.lineEdit.text())
+        print(len(self.newTaskKeywordUi.lineEdit.text()))
+        self.newTaskKeywordUi.lineEdit.setFocus()
+        self.newTaskKeywordUi.lineEdit.setCursorPosition(int(keywordLength))
+
+        #self.newTaskKeywordUi.lineEdit.setCursorPosition(100)
+
+
+    def newTaskOKButtonAction(self, item):
+        print('\ndef >>>>> newTaskOKButtonAction')
+        print(item)
+
+
+
+        if item != "":
+
+            toBeCreatePath = os.path.join(self.selProjScnShotPath, self.selShot, 'components', item)
+            print(self.selProjScnShotPath)
+            print(toBeCreatePath)
+            if os.path.isdir(toBeCreatePath):
+                print('toBeCreatePath already exists.')
+                QMessageBox.information(self, 'Path already exists.', 'The task <{}> is already exists'.format('item'))
+            else:
+                self.newTaskCreateAction(item, toBeCreatePath)
+                self.newTaskKeywordUi.close()
+        else:
+            print('empty is not accepted')
+            self.newTaskKeywordUi.lineEdit.setFocus()
+
+
+    def newTaskCreateAction(self, inTask, inPath):
+        print('def >>>>> newTaskCreateAction')
+
+        theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateTask" {} /E /I'.format(inPath)
+        os.system(theCmd)
+        print('copy done.')
+
+        self.listWidget_3.addItem(inTask)
+
+
+    def newShotCreateAction(self):
+        print('def >>>>> newShotCreateAction')
+
+        passToken = False
+        while passToken == False:
+            inputCheck = QInputDialog.getText(self, 'New Shot', 'New Shot Name :',QLineEdit.Normal)
+            print(inputCheck[0])
+
+            if inputCheck[0]:
+                newPath = os.path.join(self.selProjScnShotPath, inputCheck[0])
+
+                if os.path.isdir(newPath) == True:
+                    QMessageBox.information(self, 'Ooops!', 'Shot Name already exists.')
+                else:
+                    passToken = True
+
+        theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
+        print(theCmd)
+        os.system(theCmd)
+
+        self.listWidget_2.addItem(inputCheck[0])
+
+    def newShotCreateBatchAction(self):
+        print('def >>>>> newShotCreateBatchAction')
+
+        inputFile = QFileDialog.getOpenFileName(self, 'Open file', 'c:\\', 'Text file (*.txt)')
+
+        print(inputFile)
+
+        shotNamesList = []
+        f = open(inputFile[0], 'r')
+        for line in f:
+            if line != '\n':
+                shotNamesList.append(line.rstrip('\n'))
+
+        f.close()
+
+        print(shotNamesList)
+
+        for i in shotNamesList:
+            newPath = os.path.join(self.selProjScnShotPath, i)
+            theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
+            print(theCmd)
+            os.system(theCmd)
+            self.listWidget_2.addItem(i)
+
+
+
+    def newSequenceCreateAction(self):
+        print('def >>>>> newSequenceCreateAction')
+
+        passToken = False
+        while passToken == False:
+            inputCheck = QInputDialog.getText(self, 'New Sequence', 'New Sequence Name :',QLineEdit.Normal)
+            print(inputCheck[0])
+
+            if inputCheck[0]:
+                newPath = os.path.join(self.selProjScnPath, inputCheck[0])
+
+                if os.path.isdir(newPath) == True:
+                    QMessageBox.information(self, 'Ooops!', 'Sequence Name already exists.')
+                else:
+                    passToken = True
+
+        theCmd = 'mkdir {}'.format(newPath)
+        print(theCmd)
+        os.system(theCmd)
+
+        self.listWidget_1.addItem(inputCheck[0])
 
 
 
