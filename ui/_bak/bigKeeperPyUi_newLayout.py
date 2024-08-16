@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v135.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v137.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -225,6 +225,15 @@ class Ui_MainWindow(object):
         self.pushButton_genWriteCompMasterV = QPushButton(self.tabNuke)
         self.pushButton_genWriteCompMasterV.setObjectName(u"pushButton_genWriteCompMasterV")
         self.pushButton_genWriteCompMasterV.setGeometry(QRect(130, 150, 91, 23))
+        self.label_23 = QLabel(self.tabNuke)
+        self.label_23.setObjectName(u"label_23")
+        self.label_23.setGeometry(QRect(0, 20, 81, 16))
+        self.pushButton_genLightPublishBackdrop = QPushButton(self.tabNuke)
+        self.pushButton_genLightPublishBackdrop.setObjectName(u"pushButton_genLightPublishBackdrop")
+        self.pushButton_genLightPublishBackdrop.setGeometry(QRect(0, 40, 121, 41))
+        self.pushButton_LightPublishBackdrop = QPushButton(self.tabNuke)
+        self.pushButton_LightPublishBackdrop.setObjectName(u"pushButton_LightPublishBackdrop")
+        self.pushButton_LightPublishBackdrop.setGeometry(QRect(130, 40, 91, 41))
         self.tabWidget_2.addTab(self.tabNuke, "")
         self.tabHoudini = QWidget()
         self.tabHoudini.setObjectName(u"tabHoudini")
@@ -390,6 +399,16 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.listWidget_1)
 
+        self.pushButton_newSeq = QPushButton(self.tab_shotBrowser)
+        self.pushButton_newSeq.setObjectName(u"pushButton_newSeq")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.pushButton_newSeq.sizePolicy().hasHeightForWidth())
+        self.pushButton_newSeq.setSizePolicy(sizePolicy3)
+
+        self.verticalLayout_2.addWidget(self.pushButton_newSeq)
+
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
 
@@ -417,6 +436,28 @@ class Ui_MainWindow(object):
         self.listWidget_2.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
 
         self.verticalLayout_3.addWidget(self.listWidget_2)
+
+        self.horizontalLayout_16 = QHBoxLayout()
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.pushButton_newShot = QPushButton(self.tab_shotBrowser)
+        self.pushButton_newShot.setObjectName(u"pushButton_newShot")
+        sizePolicy3.setHeightForWidth(self.pushButton_newShot.sizePolicy().hasHeightForWidth())
+        self.pushButton_newShot.setSizePolicy(sizePolicy3)
+        self.pushButton_newShot.setMaximumSize(QSize(16777215, 16777215))
+
+        self.horizontalLayout_16.addWidget(self.pushButton_newShot)
+
+        self.pushButton_newShotBatch = QPushButton(self.tab_shotBrowser)
+        self.pushButton_newShotBatch.setObjectName(u"pushButton_newShotBatch")
+        sizePolicy3.setHeightForWidth(self.pushButton_newShotBatch.sizePolicy().hasHeightForWidth())
+        self.pushButton_newShotBatch.setSizePolicy(sizePolicy3)
+        self.pushButton_newShotBatch.setMaximumSize(QSize(40, 16777215))
+        self.pushButton_newShotBatch.setIconSize(QSize(16, 16))
+
+        self.horizontalLayout_16.addWidget(self.pushButton_newShotBatch)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_16)
 
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_3)
@@ -448,9 +489,6 @@ class Ui_MainWindow(object):
 
         self.pushButton_newTask = QPushButton(self.tab_shotBrowser)
         self.pushButton_newTask.setObjectName(u"pushButton_newTask")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.pushButton_newTask.sizePolicy().hasHeightForWidth())
         self.pushButton_newTask.setSizePolicy(sizePolicy3)
 
@@ -818,7 +856,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(5)
+        self.tabWidget_2.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -890,6 +928,16 @@ class Ui_MainWindow(object):
         self.pushButton_genWriteCompMasterV.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWriteCompMaster", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_genWriteCompMasterV.setText(QCoreApplication.translate("MainWindow", u"CompMaster-V", None))
+        self.label_23.setText(QCoreApplication.translate("MainWindow", u"Light Publish :", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_genLightPublishBackdrop.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWritePrerend", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_genLightPublishBackdrop.setText(QCoreApplication.translate("MainWindow", u"LightPublish\n"
+"Backdrop", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_LightPublishBackdrop.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWritePrerend", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_LightPublishBackdrop.setText(QCoreApplication.translate("MainWindow", u"LightPublish", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabNuke), QCoreApplication.translate("MainWindow", u"Nuke", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabHoudini), QCoreApplication.translate("MainWindow", u"Houdini", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabBlender), QCoreApplication.translate("MainWindow", u"Blender", None))
@@ -1006,6 +1054,10 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.listWidget_1.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_1", None))
 #endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.pushButton_newSeq.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newTask", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_newSeq.setText(QCoreApplication.translate("MainWindow", u"New Sequence", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Shot", None))
 #if QT_CONFIG(tooltip)
         self.label_20.setToolTip(QCoreApplication.translate("MainWindow", u"label_20", None))
@@ -1014,6 +1066,14 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.listWidget_2.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_2", None))
 #endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.pushButton_newShot.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newTask", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_newShot.setText(QCoreApplication.translate("MainWindow", u"New Shot", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_newShotBatch.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newTask", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_newShotBatch.setText(QCoreApplication.translate("MainWindow", u"Batch", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Task Shot", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_CompLatestRv.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_CompLatestRv", None))

@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240813b'
+winTitlePrefix = 'BigKeeper_20240816'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -434,12 +434,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_genWriteCompMaster.setText('CompMaster')
         self.pushButton_genWriteCompMasterV.clicked.connect(lambda : self.nukeBornWriteNode('CompMasterToV'))
         self.pushButton_genWriteCompMasterV.setText('CompMaster-V')
+        self.pushButton_genLightPublishBackdrop.clicked.connect(self.lightPublishBornBackdrop)
+        self.pushButton_LightPublishBackdrop.clicked.connect(self.lightPublishCopyAction)
 
         #Cmd Tab
         self.pushButton_sortoutfile.clicked.connect(lambda: self.cleanUpCompOutput(self.listWidget_1.selectedItems()))
         self.pushButton_sortoutfile.setEnabled(False)
         self.pushButton_exeDel.clicked.connect(lambda: self.cleanUpDelAction('delAction'))
         self.pushButton_exeMove.clicked.connect(lambda: self.cleanUpDelAction('moveAction'))
+
 
 
 
@@ -2582,7 +2585,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     for i in allNewNodes:
                         i.setSelected(True)
 
-                    newBD = self.nukeBornBackdrop(allNewNodes, backdropLabel, inType)
+                    newBD = self.nukeBornBackdrop(allNewNodes, backdropLabel, inType, '')
 
                     print('original After:::')
                 else:
@@ -2598,7 +2601,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 return newCreatedNode
 
 
-    def nukeBornBackdrop(self, inNodes, inLabelText, inTypeForColor):
+    def nukeBornBackdrop(self, inNodes, inLabelText, inTypeForColor, inPrefix):
         print('\ndef >>>>> nukeBornBackdrop')
 
 
@@ -2609,6 +2612,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         allNode = inNodes
         labelText = 'write' + '\n' + inLabelText
 
+        margin = 100
+        yLabelSpace = 25
+        rightOffSetSpace = 20
+        labelFontSize = 20
+        zOrder = 0
 
         if inTypeForColor == 'CompMaster':
             baseColor = 2419101951
@@ -2620,15 +2628,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             baseColor = 2060476415
         elif inTypeForColor == 'Prerend':
             baseColor = 2060476415
+        elif inTypeForColor == 'LightPublish':
+            baseColor = 2320101951
+            margin = 200
+            zOrder = -10
+            labelText = inLabelText
 
         allNode = nuke.selectedNode()
         print('nodes :' + str(len(allNode)))
 
 
-        margin = 100
-        yLabelSpace = 25
-        rightOffSetSpace = 20
-        labelFontSize = 20
+
 
         xpMax = allNode.xpos()
         xpMin = allNode.xpos()
@@ -2652,6 +2662,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         bd.knob('tile_color').setValue(baseColor)
         bd.knob('label').setValue(labelText)
         bd.knob('note_font_size').setValue(20)
+        bd.knob('name').setValue(inPrefix)
+        bd.knob('z_order').setValue(zOrder)
 
         return bd
 
@@ -2684,6 +2696,100 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                 newdata = "{set bigkframepersecond " + str(fpsFromProjectSetting) + "}" + '\n' + "{set bigk_nukeScript_From " + str(filenameWhenSave) + "}"
                 i['metadata'].fromScript(newdata)
+
+
+
+    def lightPublishBornBackdrop(self):
+        print('\ndef >>>>> lightPublishBornBackdrop')
+
+        isAlreadyExist = False
+
+        allNodes = nuke.allNodes(filter='BackdropNode')
+        for checkNode in allNodes:
+            print(checkNode['name'].value())
+
+            if checkNode['name'].value() == 'bigK_lightPublish':
+                isAlreadyExist = True
+
+        if not isAlreadyExist:
+
+            allSelNodesName = []
+
+            allNodes = nuke.selectedNodes()
+            for node in allNodes:
+                allSelNodesName.append(node['name'].value())
+
+            print(allSelNodesName)
+
+            backdropLabel= 'for LightPublish'
+            inType = 'LightPublish'
+            Prefix = 'bigK_lightPublish'
+
+            self.nukeBornBackdrop(allSelNodesName, backdropLabel, inType, Prefix)
+
+        else:
+
+            dupMessage = '\n\nBackdrop Node Name <{}> is already existed\n\n'.format(Prefix)
+            QMessageBox.information(self, 'message', dupMessage)
+
+
+    def lightPublishCopyAction(self):
+        print('\ndef >>>>> lightPublishCopyAction')
+
+        targetBackdrop = nuke.toNode('bigK_lightPublish')
+        nodesInBackdrop = targetBackdrop.getNodes()
+
+        print(nodesInBackdrop)
+
+        copySourcePaths = []
+        for node in nodesInBackdrop:
+            print(node['file'].value())
+            copySourcePaths.append(node['file'].value())
+
+        self.versionUpSaveWIP()
+
+        bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
+        currentVerNumber = bigKInfo.currentThisWipVerNum()
+        currentTaskPath = bigKInfo.currentTaskPath()
+
+        print(currentVerNumber)
+
+
+        QApplication.processEvents()
+
+        msgBox = QMessageBox()
+        msgBox.setStandardButtons(QMessageBox.NoButton)
+        msgBox.show()
+
+        totalPaths = len(copySourcePaths)
+        counter = 0
+
+        for sourcePath in copySourcePaths:
+            libPath = pathlib.Path(sourcePath)
+            print(libPath)
+            print(libPath.parent)
+            print(os.path.join(currentTaskPath, 'cache', (str(currentVerNumber).zfill(4)), os.path.basename(libPath.parent)))
+            targetPath = os.path.join(currentTaskPath, 'cache', (str(currentVerNumber).zfill(4)), os.path.basename(libPath.parent))
+            print('>>> start {}'.format(targetPath))
+            counter += 1
+            msgBox.setText('Publishing {} of {}:\n\n <......\{}\{}>'.format(counter, totalPaths, os.path.basename(libPath.parent.parent), os.path.basename(libPath.parent)))
+            QApplication.processEvents()
+            destinationPath = shutil.copytree(libPath.parent, targetPath)
+            QApplication.processEvents()
+            print('<<< done. {}'.format(destinationPath))
+
+        QApplication.processEvents()
+
+        QMessageBox.information(self, 'message', 'Publish done.')
+        msgBox.close()
+
+
+
+
+
+
+
+
 
 
 
