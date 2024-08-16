@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240816'
+winTitlePrefix = 'BigKeeper_20240816A'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -1404,7 +1404,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         return listdictProjKey
 
 
-    def versionUpSaveWIP(self):
+    def versionUpSaveWIP(self, inShowDoneMsgBox = True):
         print('\ndef >>>>> versionUpSaveWIP')
         if in_nuke:
             bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
@@ -1424,16 +1424,19 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 isAssist = nukeEnv['assist']
 
                 if isAssist:
-                    theMessage = 'Be Careful !\nBe Careful !!\nBe Careful !!!\n' + 'Currently in < Nuke Assist >.\n\n' + 'Only <Nuke Script WIP version _v#### > and <fps metadata> are updated.\n\nNone of <Write Nodes> are updated. Therefore :\n\n'+ '     1) Do not render this nuke script verion.\n' + '     2) Before submit render, you must <Version Up> in Nuke or NukeX to align the write node version number.'
-                    QMessageBox.information(self, 'WARNING !!! ', theMessage)
+                    if inShowDoneMsgBox == True:
+                        theMessage = 'Be Careful !\nBe Careful !!\nBe Careful !!!\n' + 'Currently in < Nuke Assist >.\n\n' + 'Only <Nuke Script WIP version _v#### > and <fps metadata> are updated.\n\nNone of <Write Nodes> are updated. Therefore :\n\n'+ '     1) Do not render this nuke script verion.\n' + '     2) Before submit render, you must <Version Up> in Nuke or NukeX to align the write node version number.'
+                        QMessageBox.information(self, 'WARNING !!! ', theMessage)
                 else:
-                    theMessage = 'WIP version up, Done.\n\nbigK_Write nodes --- version numbers aligned.\nbigK_ModifyMetadata nodes --- fps metadata aligned to Project Setting.'
-                    QMessageBox.information(self, 'version up33 ', theMessage)
+                    if inShowDoneMsgBox == True:
+                        theMessage = 'WIP version up, Done.\n\nbigK_Write nodes --- version numbers aligned.\nbigK_ModifyMetadata nodes --- fps metadata aligned to Project Setting.'
+                        QMessageBox.information(self, 'version up33 ', theMessage)
 
 
         elif in_houdini:
             hou.hipFile.saveAndIncrementFileName()
-            hou.ui.displayMessage('Done.', buttons=('OK',), default_choice=0, close_choice=0)
+            if inShowDoneMsgBox == True:
+                hou.ui.displayMessage('Done.', buttons=('OK',), default_choice=0, close_choice=0)
 
 
     def myDialogShow2(self, inTitle = 'inTitle', inMessage = 'inMessage'):
@@ -2746,7 +2749,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print(node['file'].value())
             copySourcePaths.append(node['file'].value())
 
-        self.versionUpSaveWIP()
+        self.versionUpSaveWIP(False)
 
         bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
         currentVerNumber = bigKInfo.currentThisWipVerNum()
