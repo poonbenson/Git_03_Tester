@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v137.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v138.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -932,12 +932,13 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.pushButton_genLightPublishBackdrop.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWritePrerend", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_genLightPublishBackdrop.setText(QCoreApplication.translate("MainWindow", u"LightPublish\n"
-"Backdrop", None))
+        self.pushButton_genLightPublishBackdrop.setText(QCoreApplication.translate("MainWindow", u"Backdrop (only 1)\n"
+"(for LightPublish)", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_LightPublishBackdrop.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_genWritePrerend", None))
 #endif // QT_CONFIG(tooltip)
-        self.pushButton_LightPublishBackdrop.setText(QCoreApplication.translate("MainWindow", u"LightPublish", None))
+        self.pushButton_LightPublishBackdrop.setText(QCoreApplication.translate("MainWindow", u"VersionUp + \n"
+"LightPublish", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabNuke), QCoreApplication.translate("MainWindow", u"Nuke", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabHoudini), QCoreApplication.translate("MainWindow", u"Houdini", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tabBlender), QCoreApplication.translate("MainWindow", u"Blender", None))

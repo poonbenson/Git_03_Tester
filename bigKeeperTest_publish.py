@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240817B'
+winTitlePrefix = 'BigKeeper_20240817C'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -407,6 +407,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.createShotNewTaskUi.pushButton_cancel.clicked.connect(self.createShotNewTaskClose)
 
         self.pushButton_CompLatestRv.clicked.connect(self.compLatestRvAction)
+        self.pushButton_CompLatestRv.setEnabled(False)
+
+        self.pushButton_shotAction2.clicked.connect(self.openCacheFolder)
+        self.pushButton_shotAction2.setText('-Cache- Folder')
+        self.pushButton_shotAction2.setEnabled(False)
+
+        self.pushButton_shotAction3.clicked.connect(self.openOutputFolder)
+        self.pushButton_shotAction3.setText('-Output- Folder')
+        self.pushButton_shotAction3.setEnabled(False)
 
 
 
@@ -463,6 +472,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.tabWidget.setCurrentIndex(0)
 
         self.pushButton_shotAction.setText('shotActionMenu')
+        self.pushButton_shotAction.setEnabled(False)
         self.shotActionMenu = QMenu(self.pushButton_shotAction)
         self.shotAction1 = QAction('Edit Shot Task', self)
         #self.shotAction2 = QAction('RV latest Comp Output', self)
@@ -1011,6 +1021,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_newSeq.setEnabled(True)
         self.pushButton_newShot.setEnabled(False)
         self.pushButton_newShotBatch.setEnabled(False)
+        self.pushButton_CompLatestRv.setEnabled(False)
+        self.pushButton_shotAction.setEnabled(False)
+        self.pushButton_shotAction2.setEnabled(False)
+        self.pushButton_shotAction3.setEnabled(False)
 
 
 
@@ -1110,6 +1124,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_newShot.setEnabled(True)
         self.pushButton_newShotBatch.setEnabled(True)
         self.pushButton_sortoutfile.setEnabled(True)
+        self.pushButton_CompLatestRv.setEnabled(False)
+        self.pushButton_shotAction.setEnabled(False)
+        self.pushButton_shotAction2.setEnabled(False)
+        self.pushButton_shotAction3.setEnabled(False)
 
 
     def listWidget_3_appear(self, item3):
@@ -1132,6 +1150,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.locationPath = os.path.join(self.selProjScnShotPath, item3.text())
         self.lineEdit_Location.setText(self.locationPath)
         self.pushButton_newTask.setDisabled(False)
+        self.pushButton_CompLatestRv.setEnabled(False)
+        self.pushButton_shotAction.setEnabled(False)
+        self.pushButton_shotAction2.setEnabled(False)
+        self.pushButton_shotAction3.setEnabled(False)
 
 
     def listWidget_3C_action(self, item):
@@ -1317,6 +1339,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.lineEdit_Location.setText(self.locationPath)
         print(os.listdir(os.path.join(self.locationPath, self.subDict[self.selProjWipCode])))
         self.selTask = item.text()
+        self.pushButton_CompLatestRv.setEnabled(True)
+        self.pushButton_shotAction.setEnabled(True)
+        self.pushButton_shotAction2.setEnabled(True)
+        self.pushButton_shotAction3.setEnabled(True)
+
         #return item
 
     def myAction1(self):
@@ -2868,6 +2895,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         QMessageBox.information(self, 'message', 'Publish done.')
         msgBox.close()
 
+
+    def openCacheFolder(self):
+        print('\ndef >>>>> openCacheFolder')
+        os.startfile(os.path.join(self.selProjScnShotTaskPath, self.selTask, 'cache'))
+
+    def openOutputFolder(self):
+        print('\ndef >>>>> openOutputFolder')
+        os.startfile(os.path.join(self.selProjScnShotTaskPath, self.selTask, 'output'))
 
 
 
