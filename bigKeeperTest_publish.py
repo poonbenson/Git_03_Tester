@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240816A'
+winTitlePrefix = 'BigKeeper_20240817'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2739,8 +2739,24 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def lightPublishCopyAction(self):
         print('\ndef >>>>> lightPublishCopyAction')
 
+        def findSeqBaseName(inReadNodeFilePath):
+            print('\ndef >>>>> findSeqBaseName')
+            thePath = pathlib.Path(inReadNodeFilePath)
+            print('inReadNodeFilePath : {}'.format(thePath))
+
+            numPadPhase = thePath.stem.split('.')[-1]
+            if numPadPhase.startswith('%') or numPadPhase.isnumeric():
+                seqBaseName = str(thePath.stem).rstrip('.'+ numPadPhase)
+            else:
+                seqBaseName = thePath.stem
+            print(seqBaseName)
+            print('def findSeqBaseName <<<<<')
+            return seqBaseName
+
         targetBackdrop = nuke.toNode('bigK_lightPublish')
         nodesInBackdrop = targetBackdrop.getNodes()
+
+
 
         print(nodesInBackdrop)
 
@@ -2767,6 +2783,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         totalPaths = len(copySourcePaths)
         counter = 0
 
+        ''' #replaced
         for sourcePath in copySourcePaths:
             libPath = pathlib.Path(sourcePath)
             print(libPath)
@@ -2780,6 +2797,71 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             destinationPath = shutil.copytree(libPath.parent, targetPath)
             QApplication.processEvents()
             print('<<< done. {}'.format(destinationPath))
+        '''
+
+        for sourcePath in copySourcePaths:
+            print('\n\n\n\n\n************************************************')
+            sourceReadNodeFilePath = pathlib.Path(sourcePath)
+            print(sourceReadNodeFilePath)
+            print(sourceReadNodeFilePath.parent)
+
+
+            '''
+            numPadPhase = str(sourceReadNodeFilePath.stem).split('.')[-1]
+            if numPadPhase.startswith('%') or numPadPhase.isnumeric():
+                sourceSeqBaseName = str(sourceReadNodeFilePath.stem).rstrip('.'+ numPadPhase)
+            else:
+                sourceSeqBaseName = sourceReadNodeFilePath.stem
+            '''
+            sourceSeqBaseName = findSeqBaseName(sourceReadNodeFilePath)
+            print('\n\nsourceSeqBaseName : {}\n\n'.format(sourceSeqBaseName))
+
+            #print(os.path.join(currentTaskPath, 'cache', (str(currentVerNumber).zfill(4)), os.path.basename(sourceReadNodeFilePath.parent)))
+            destinationVerPath = os.path.join(currentTaskPath, 'cache', (str(currentVerNumber).zfill(4)), os.path.basename(sourceReadNodeFilePath.parent))
+
+            listFiles = os.listdir(sourceReadNodeFilePath.parent)
+
+            targetFiles = []
+
+            for file in listFiles:
+                jointFilePath = os.path.join(sourceReadNodeFilePath.parent, file)
+                if not os.path.isdir(jointFilePath):
+                    libPath = pathlib.Path(jointFilePath)
+                    #if libPath.stem.startswith(sourceSeqBaseName):
+                    #print(sourceSeqBaseName)
+                    #print('vs')
+                    #print(findSeqBaseName(jointFilePath))
+                    if findSeqBaseName(jointFilePath) == sourceSeqBaseName:
+                        targetFiles.append(libPath)
+                        #print('                                      append >>> {}\n'.format(libPath))
+                    else:
+                        #print('                                                            Skipped. --- seqBasename not match.\n')
+                        pass
+                else:
+                    #print('                                                            Skipped. --- It is a folder\n')
+                    pass
+
+            print('targetFiles :')
+            for line in targetFiles:
+                print(line)
+
+
+
+
+            print('>>> start {}'.format(destinationVerPath))
+            if not os.path.isdir(destinationVerPath):
+                os.makedirs(destinationVerPath)
+
+            counter += 1
+            for copyFile in targetFiles:
+                msgBox.setText('Publishing {} of {}:\n\n <......\{}\{}>'.format(counter, totalPaths, os.path.basename(sourceReadNodeFilePath.parent.parent), os.path.basename(sourceReadNodeFilePath.parent)))
+                QApplication.processEvents()
+                #destinationPath = shutil.copytree(sourceReadNodeFilePath.parent, destinationVerPath)
+                print(destinationVerPath)
+                destinationPath = shutil.copy(copyFile, destinationVerPath)
+                QApplication.processEvents()
+            print('<<< done. {}'.format(destinationPath))
+
 
         QApplication.processEvents()
 
