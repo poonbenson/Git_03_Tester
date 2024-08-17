@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240817'
+winTitlePrefix = 'BigKeeper_20240817B'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2732,7 +2732,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         else:
 
-            dupMessage = '\n\nBackdrop Node Name <{}> is already existed\n\n'.format(Prefix)
+            dupMessage = '\n\nBackdrop Node Name <{}> is already existed\n\n'.format('bigK_lightPublish')
             QMessageBox.information(self, 'message', dupMessage)
 
 
@@ -2854,7 +2854,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             counter += 1
             for copyFile in targetFiles:
-                msgBox.setText('Publishing {} of {}:\n\n <......\{}\{}>'.format(counter, totalPaths, os.path.basename(sourceReadNodeFilePath.parent.parent), os.path.basename(sourceReadNodeFilePath.parent)))
+                msgBox.setText('Publishing {} of {}:\n\n <......\{}\{}\n\n{}>'.format(counter, totalPaths, os.path.basename(sourceReadNodeFilePath.parent.parent), os.path.basename(sourceReadNodeFilePath.parent), copyFile))
                 QApplication.processEvents()
                 #destinationPath = shutil.copytree(sourceReadNodeFilePath.parent, destinationVerPath)
                 print(destinationVerPath)
