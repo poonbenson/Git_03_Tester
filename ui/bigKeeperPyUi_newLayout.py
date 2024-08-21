@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v139.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v140.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -841,12 +841,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.tabWidget)
 
-        self.horizontalSlider = QSlider(self.centralwidget)
-        self.horizontalSlider.setObjectName(u"horizontalSlider")
-        self.horizontalSlider.setMaximum(1)
-        self.horizontalSlider.setOrientation(Qt.Horizontal)
+        self.horizontalSlider_echoSwitch = QSlider(self.centralwidget)
+        self.horizontalSlider_echoSwitch.setObjectName(u"horizontalSlider_echoSwitch")
+        self.horizontalSlider_echoSwitch.setMaximum(1)
+        self.horizontalSlider_echoSwitch.setOrientation(Qt.Horizontal)
 
-        self.verticalLayout.addWidget(self.horizontalSlider)
+        self.verticalLayout.addWidget(self.horizontalSlider_echoSwitch)
 
         self.verticalSpacer_4 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Minimum)
 
@@ -1181,7 +1181,7 @@ class Ui_MainWindow(object):
         self.pushButton_20.setText(QCoreApplication.translate("MainWindow", u"explore...", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_assetBrowser), QCoreApplication.translate("MainWindow", u"developing Browser", None))
 #if QT_CONFIG(tooltip)
-        self.horizontalSlider.setToolTip(QCoreApplication.translate("MainWindow", u"horizontalSlider", None))
+        self.horizontalSlider_echoSwitch.setToolTip(QCoreApplication.translate("MainWindow", u"horizontalSlider_echoSwitch", None))
 #endif // QT_CONFIG(tooltip)
     # retranslateUi
 

@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240821'
+winTitlePrefix = 'BigKeeper_20240822'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -196,9 +196,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             window = BigMainWindow()
             window.show()
 
-    def printdbug(self, isToken, inText):
-        if isToken:
-            print(inText)
 
     def SoftwareMainWindow(self):
         self.main_window_ptr = QApplication.activeWindow()
@@ -223,6 +220,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.label_houdiniIcon.setPixmap(QPixmap(os.path.join(iconPath, 'houdini.png')))
         self.label_houdiniIcon.setScaledContents(True)
 
+        self.horizontalSlider_echoSwitch.setRange(0,1)
+        self.horizontalSlider_echoSwitch.valueChanged.connect(self.printEcho)
+        self.horizontalSlider_echoSwitch.valueChanged.connect(self.printEchoUIFeedback)
 
         self.comboBoxEntries = self.listBigKeeperProject()
         self.comboBoxEntries.sort()
@@ -641,6 +641,21 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_num7.clicked.connect(lambda: self.listWidget_1_receivedListB())
         self.pushButton_num7.setText('listMulti')
 
+    def printEchoUIFeedback(self):
+        if self.horizontalSlider_echoSwitch.value() == 0:
+            print('Echo Print is OFF')
+        else:
+            print('Echo Print is ON')
+
+    def printEcho(self, inText):
+        #print('\ndef >>>>> printEcho')
+        # value = 0, not to printEcho
+        # value = 1, do printEcho
+        #print(self.horizontalSlider_echoSwitch.value())
+
+        if self.horizontalSlider_echoSwitch.value() == 1:
+            print(inText)
+
     def listWidget_1_receivedList(self, item):
         print('\ndef >>>>> listWidget_1_receivedList')
         print(item.text())
@@ -1003,15 +1018,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def listWidget_1_appear(self, item):
         print('\ndef >>>>> listWidget_1_appear ---Sequence')
-        print(self.selProj)
+        self.printEcho(self.selProj)
         folderList = os.listdir(self.selProjScnPath)
         listSeq = []
         for i in folderList:
             if os.path.isdir(os.path.join(self.selProjScnPath, i)):
                 listSeq.append(i)
         listSeq.sort()
-        print('listSeq is :')
-        print(listSeq) # eg. ['animaticSeq', 'balloonSeq', 'edits', 'socialSeq', 'testSeq', 'turnTableSeq', 'tvcSeq']
+        self.printEcho('listSeq is :')
+        self.printEcho(listSeq) # eg. ['animaticSeq', 'balloonSeq', 'edits', 'socialSeq', 'testSeq', 'turnTableSeq', 'tvcSeq']
         self.list1Entries = []
         self.list1Entries = listSeq
         #self.listWidget_3.clear()
@@ -1045,27 +1060,27 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             splitPath = os.path.splitdrive(os.path.normpath(self.subDict[self.selProjPath]))
             splitDrive = splitPath[0]
             splitTail = splitPath[1].split(os.path.sep)
-            print('splitPath : {}'.format(splitPath))
-            print('splitDrive : {}'.format(splitDrive))
-            print('splitTail : {}'.format(splitTail))
+            self.printEcho('splitPath : {}'.format(splitPath))
+            self.printEcho('splitDrive : {}'.format(splitDrive))
+            self.printEcho('splitTail : {}'.format(splitTail))
             self.selProjRootPath = os.path.normpath(os.path.join(splitDrive, os.path.sep, splitTail[1], splitTail[2], splitTail[3]))
-            print('self.selProjRootPath : {}'.format(self.selProjRootPath))
+            self.printEcho('self.selProjRootPath : {}'.format(self.selProjRootPath))
 
 
-            print('self.subDict[self.selProjName]:' + self.subDict[self.selProjName]) # eg. kfcPoke
-            print('self.subDict[self.selProjPath]:' + self.subDict[self.selProjPath]) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/
+            self.printEcho('self.subDict[self.selProjName]:' + self.subDict[self.selProjName]) # eg. kfcPoke
+            self.printEcho('self.subDict[self.selProjPath]:' + self.subDict[self.selProjPath]) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/
             self.selProjScnPath = os.path.normpath(os.path.join(self.subDict[self.selProjPath], self.subDict[self.selProjScnCode]))
-            print('self.selProjScnPath:' + self.selProjScnPath) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/scenes
-            print('self.subDict[self.selProjWipCode]:' + self.subDict[self.selProjWipCode]) # eg. wip
-            print('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
+            self.printEcho('self.selProjScnPath:' + self.selProjScnPath) # eg. N:/mnt/job/19005kfcPoke/WorkingFile/kfcPoke/scenes
+            self.printEcho('self.subDict[self.selProjWipCode]:' + self.subDict[self.selProjWipCode]) # eg. wip
+            self.printEcho('self.subDict[self.selProjPublishCode]:' + self.subDict[self.selProjPublishCode]) # eg. published
             folderList = os.listdir(self.selProjScnPath)
             listSeq = []
             for i in folderList:
                 if os.path.isdir(os.path.join(self.selProjScnPath, i)):
                     listSeq.append(i)
             listSeq.sort()
-            print('listSeq is :')
-            print(listSeq) # eg. ['animaticSeq', 'balloonSeq', 'edits', 'socialSeq', 'testSeq', 'turnTableSeq', 'tvcSeq']
+            self.printEcho('listSeq is :')
+            self.printEcho(listSeq) # eg. ['animaticSeq', 'balloonSeq', 'edits', 'socialSeq', 'testSeq', 'turnTableSeq', 'tvcSeq']
             self.list1Entries = []
             self.list1Entries = listSeq
             self.listWidget_3.clear()
@@ -1101,10 +1116,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def listWidget_2_appear2(self, item2):
         print('listWidget_2_appear2 ---Shot')
 
-        #self.printdbug()
-
         self.listWidget_3.clear()
-        print(item2)
+        self.printEcho(item2)
         self.selProjScnItem = item2
         self.selProjScnName = item2.text()
         self.selProjScnShotPath = os.path.join(self.selProjScnPath, item2.text())
@@ -1113,8 +1126,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         for i in folderList:
             if os.path.isdir(os.path.join(self.selProjScnShotPath, i)):
                 self.listShot.append(str(i))
-        print(self.selProjScnShotPath)
-        print(self.listShot)
+        self.printEcho(self.selProjScnShotPath)
+        self.printEcho(self.listShot)
         self.listShot.sort()
         self.listWidget_2.clear()
         self.listWidget_2.addItems(self.listShot)
@@ -1135,7 +1148,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-        print(item3.text())
+        self.printEcho(item3.text())
         self.selShot = item3.text()
         self.selProjScnShotTaskPath = os.path.join(self.selProjScnShotPath, item3.text(), "components")
         folderList = os.listdir(self.selProjScnShotTaskPath)
@@ -1143,7 +1156,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         for i in folderList:
             if os.path.isdir(os.path.join(self.selProjScnShotTaskPath, i)):
                 listTask.append(str(i))
-        print(listTask)
+        self.printEcho(listTask)
         listTask.sort()
         self.listWidget_3.clear()
         self.listWidget_3.addItems(listTask)
@@ -1163,8 +1176,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         except:
             theItem = item
         self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, theItem, self.subDict[self.selProjWipCode])
-        print(self.selProjScnShotTaskWIPPath)
-        print(theItem)
+        self.printEcho(self.selProjScnShotTaskWIPPath)
+        self.printEcho(theItem)
         self.selTask = theItem
 
         #checkResult = self.createNewWIP(item)
@@ -1175,7 +1188,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         if checkResult != 'no' :
             self.listFile = self.listOutFilesInFolder()
-            print(len(self.listFile))
+            self.printEcho(len(self.listFile))
             #fileCount = len(listFile)
 
             if in_nuke or in_houdini:
@@ -1194,10 +1207,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.listFile = self.listOutFilesInFolder()
         self.listFile.sort()
-        print(self.listFile[-1])
+        self.printEcho(self.listFile[-1])
         self.wrongFormatUi.listWidget.clear()
         if self.selProj in nukeWrongFormatProj:
-            print('WRONG WRONG WRONG')
+            self.printEcho('WRONG WRONG WRONG')
             #self.childUi.show()
             self.wrongFormatUi.listWidget.addItems(self.listFile)
             #self.wrongFormatUi.listWidget.itemDoubleClicked.connect(self.listWidget_A_action)
@@ -1208,7 +1221,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             if in_nuke:
                 self.tabWidget.setCurrentIndex(0)
                 if nuke.Root().modified() == True:
-                    print('current changes have not yet been saved!')
+                    self.printEcho('current changes have not yet been saved!')
                     nuke.scriptClose() ### pop a dialog instead of close.
                     if nuke.Root().modified() == False:
                         nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
@@ -1235,7 +1248,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
             else:
-                print('will open:', os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
+                self.printEcho('will open:', os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
                 #subprocess.Popen([r'C:/Program Files/Nuke11.3v3/Nuke11.3.exe', os.path.join(self.selProjScnShotTaskWIPPath, listFile[-1])])
                 #window.close()
 
@@ -1252,7 +1265,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print('\ndef >>>>> reviveAction')
         bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
         listFile = bigKInfo.listOutFilesInFolder()
-        print(listFile)
+        self.printEcho(listFile)
 
         self.reviveUi.listWidget.clear()
         self.reviveUi.listWidget.addItems(listFile)
@@ -1266,16 +1279,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.reviveUi.close()
         if in_nuke:
             if nuke.Root().modified() == True:
-                print('current changes have not yet been saved!')
+                self.printEcho('current changes have not yet been saved!')
                 nuke.scriptClose() ### pop a dialog instead of close.
                 if nuke.Root().modified() == False:
-                    print(os.path.join(bigKInfo.currentPath(), item.text()))
+                    self.printEcho(os.path.join(bigKInfo.currentPath(), item.text()))
                     nuke.scriptOpen(os.path.join(bigKInfo.currentPath(), item.text()))
                     self.activateCurrentTab()
 
             else:
                 nuke.scriptClose()
-                print(os.path.join(bigKInfo.currentPath(), item.text()))
+                self.printEcho(os.path.join(bigKInfo.currentPath(), item.text()))
                 nuke.scriptOpen(os.path.join(bigKInfo.currentPath(), item.text()))
                 self.activateCurrentTab()
 
@@ -1293,30 +1306,30 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             if i.find(self.subDict[self.selProjWipCode]) and os.path.isfile(os.path.join(self.selProjScnShotTaskWIPPath, i)):
                 if i.endswith(wipExtension):
                     listFile.append(i)
-        print(r'listFile in listOutFilesInFolder:')
-        print(listFile)
+        self.printEcho(r'listFile in listOutFilesInFolder:')
+        self.printEcho(listFile)
         return listFile
 
 
     def listWidget_A_action(self, item):
 
         print('listWidget_A_action listWidget_A_action listWidget_A_action')
-        print(item.text())
-        print(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
+        self.printEcho(item.text())
+        self.printEcho(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
         self.wrongFormatUi.close()
         if in_nuke:
             if nuke.Root().modified() == True:
-                print('current changes have not yet been saved!')
+                self.printEcho('current changes have not yet been saved!')
                 nuke.scriptClose() ### pop a dialog instead of close.
                 if nuke.Root().modified() == False:
-                    print(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
+                    self.printEcho(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
                     nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
                     self.activateCurrentTab()
 
 
             else:
                 nuke.scriptClose()
-                print((os.path.join(self.selProjScnShotTaskWIPPath, item.text())))
+                self.printEcho((os.path.join(self.selProjScnShotTaskWIPPath, item.text())))
                 nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
                 self.activateCurrentTab()
 
@@ -1327,17 +1340,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def listWidget_shotTask_action(self, item):
         print('\ndef >>>>> listWidget_shotTask_action')
 
-        print(self.selProjScnShotTaskPath)
-        print(item.text())
-        print(self.subDict[self.selProjWipCode])
+        self.printEcho(self.selProjScnShotTaskPath)
+        self.printEcho(item.text())
+        self.printEcho(self.subDict[self.selProjWipCode])
 
         self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, item.text(), self.subDict[self.selProjWipCode])
-        print(self.selProjScnShotTaskWIPPath)
+        self.printEcho(self.selProjScnShotTaskWIPPath)
 
         self.locationPath = os.path.join(self.selProjScnShotTaskPath, item.text())
-        print(self.locationPath)
+        self.printEcho(self.locationPath)
         self.lineEdit_Location.setText(self.locationPath)
-        print(os.listdir(os.path.join(self.locationPath, self.subDict[self.selProjWipCode])))
+        self.printEcho(os.listdir(os.path.join(self.locationPath, self.subDict[self.selProjWipCode])))
         self.selTask = item.text()
         self.pushButton_CompLatestRv.setEnabled(True)
         self.pushButton_shotAction.setEnabled(True)
@@ -1409,7 +1422,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 m = i.find('scenesfolder').text
                 n = i.find('workshopname').text
                 o = i.find('mastername').text
-                print(j)
+                self.printEcho(j)
                 dictDetail = {}
                 dictDetail.update({"name" :j})
                 dictDetail.update({"path":k})
@@ -1418,15 +1431,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 dictDetail.update({"workshopname" : n})
                 dictDetail.update({"mastername" : o})
                 self.dictProj.update({j : dictDetail})
-                print(self.dictProj[j])
+                self.printEcho(self.dictProj[j])
 
 
-        print(self.dictProj)
+        self.printEcho(self.dictProj)
         listdictProjKey = []
         for i in self.dictProj:
             listdictProjKey.append(i)
-        print(listdictProjKey)
-        print(type(listdictProjKey))
+        self.printEcho(listdictProjKey)
+        self.printEcho(type(listdictProjKey))
 
         return listdictProjKey
 
@@ -1436,13 +1449,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         if in_nuke:
             bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
             thisWipVer = bigKInfo.currentThisWipVerNum()
-            print(thisWipVer)
+            self.printEcho(thisWipVer)
             nukescripts.script.script_version_up()
 
             bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
-            print(bigKInfo.currentThisWipVerNum())
+            self.printEcho(bigKInfo.currentThisWipVerNum())
             if thisWipVer != bigKInfo.currentThisWipVerNum():
-                print('another WIP ver.')
+                self.printEcho('another WIP ver.')
                 self.nukeUpdateMetadataNodeFps()
                 self.nukeUpdateWriteNodeVer()
                 nuke.scriptSave()
@@ -1493,21 +1506,21 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print('\ndef >>>>> prerendKeywordShow')
 
         getBigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
-        print(getBigKInfo.currentProjWorkPath())
+        self.printEcho(getBigKInfo.currentProjWorkPath())
 
         self.prerendKeywordUi.comboBox.clear()
         self.prerendKeywordUi.lineEdit.clear()
 
         with open(os.path.join(getBigKInfo.currentProjWorkPath(), 'compPrerendPreset.txt')) as file:
             contents = file.readlines()
-        print(contents)
+        self.printEcho(contents)
 
         keywords = [""]
 
         for i in contents:
             keywords.append(i.replace('\n', ""))
 
-        print(keywords)
+        self.printEcho(keywords)
 
         self.prerendKeywordUi.label.setText('Input a sub-name for sub-folderName and sub-framename :')
         self.prerendKeywordUi.comboBox.addItems(keywords)
@@ -1530,11 +1543,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def prerendKeywordAction(self, item):
         print('\ndef >>>>> prerendKeywordAction')
-        print(item)
+        self.printEcho(item)
 
         self.prerendKeywordUi.lineEdit.setText(item)
         keywordLength = len(self.prerendKeywordUi.lineEdit.text())
-        print(len(self.prerendKeywordUi.lineEdit.text()))
+        self.printEcho(len(self.prerendKeywordUi.lineEdit.text()))
         self.prerendKeywordUi.lineEdit.setFocus()
         self.prerendKeywordUi.lineEdit.setCursorPosition(int(keywordLength))
 
@@ -1543,13 +1556,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def prerendOKButtonAction(self, item):
         print('\ndef >>>>> prerendOKButtonAction')
-        print(item)
+        self.printEcho(item)
 
         if item != "":
             self.nukeBornWriteNode('Prerend', item)
             self.prerendKeywordUi.close()
         else:
-            print('empty is not accepted')
+            self.printEcho('empty is not accepted')
             self.prerendKeywordUi.lineEdit.setFocus()
 
 
@@ -1576,15 +1589,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             else:
                 contents.remove(folder)
 
-        print('content: ')
-        print(contents)
+        self.printEcho('content: ')
+        self.printEcho(contents)
 
         keywords = [""]
 
         for i in contents:
             keywords.append(i.replace('\n', ""))
 
-        print(keywords)
+        self.printEcho(keywords)
 
         self.newTaskKeywordUi.label.setText('Input a sub-name for sub-folderName and sub-framename :')
         self.newTaskKeywordUi.comboBox.addItems(keywords)
@@ -1608,11 +1621,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def newTaskKeywordAction(self, item):
         print('\ndef >>>>> newTaskKeywordAction')
-        print(item)
+        self.printEcho(item)
 
         self.newTaskKeywordUi.lineEdit.setText(item)
         keywordLength = len(self.newTaskKeywordUi.lineEdit.text())
-        print(len(self.newTaskKeywordUi.lineEdit.text()))
+        self.printEcho(len(self.newTaskKeywordUi.lineEdit.text()))
         self.newTaskKeywordUi.lineEdit.setFocus()
         self.newTaskKeywordUi.lineEdit.setCursorPosition(int(keywordLength))
 
@@ -1621,23 +1634,23 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def newTaskOKButtonAction(self, item):
         print('\ndef >>>>> newTaskOKButtonAction')
-        print(item)
+        self.printEcho(item)
 
 
 
         if item != "":
 
             toBeCreatePath = os.path.join(self.selProjScnShotPath, self.selShot, 'components', item)
-            print(self.selProjScnShotPath)
-            print(toBeCreatePath)
+            self.printEcho(self.selProjScnShotPath)
+            self.printEcho(toBeCreatePath)
             if os.path.isdir(toBeCreatePath):
-                print('toBeCreatePath already exists.')
+                self.printEcho('toBeCreatePath already exists.')
                 QMessageBox.information(self, 'Path already exists.', 'The task <{}> is already exists'.format('item'))
             else:
                 self.newTaskCreateAction(item, toBeCreatePath)
                 self.newTaskKeywordUi.close()
         else:
-            print('empty is not accepted')
+            self.printEcho('empty is not accepted')
             self.newTaskKeywordUi.lineEdit.setFocus()
 
 
@@ -1646,7 +1659,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateTask" {} /E /I'.format(inPath)
         os.system(theCmd)
-        print('copy done.')
+        self.printEcho('copy done.')
 
         self.listWidget_3.addItem(inTask)
 
@@ -1657,7 +1670,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         passToken = False
         while passToken == False:
             inputCheck, ok = QInputDialog.getText(self, 'New Shot', 'New Shot Name :',QLineEdit.Normal)
-            print(inputCheck[0])
+            self.printEcho(inputCheck[0])
 
             if inputCheck[0] and ok:
                 newPath = os.path.join(self.selProjScnShotPath, inputCheck[0])
@@ -1668,7 +1681,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     passToken = True
 
         theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
-        print(theCmd)
+        self.printEcho(theCmd)
         os.system(theCmd)
 
         self.listWidget_2.addItem(inputCheck[0])
@@ -1680,7 +1693,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         inputFile, ok= QFileDialog.getOpenFileName(self, 'Open file', 'c:\\', 'Text file (*.txt)')
 
         if ok:
-            print(inputFile)
+            self.printEcho(inputFile)
 
             shotNamesList = []
             f = open(inputFile[0], 'r')
@@ -1690,12 +1703,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             f.close()
 
-            print(shotNamesList)
+            self.printEcho(shotNamesList)
 
             for i in shotNamesList:
                 newPath = os.path.join(self.selProjScnShotPath, i)
                 theCmd = r'xcopy "N:\bpPipeline\bigKeeperPyIni\templateShot" {} /E /I'.format(newPath)
-                print(theCmd)
+                self.printEcho(theCmd)
                 os.system(theCmd)
                 self.listWidget_2.addItem(i)
 
@@ -1707,7 +1720,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         passToken = False
         while passToken == False:
             inputCheck, ok = QInputDialog.getText(self, 'New Sequence', 'New Sequence Name :',QLineEdit.Normal)
-            print(inputCheck[0])
+            self.printEcho(inputCheck[0])
 
             if inputCheck[0] and ok:
                 newPath = os.path.join(self.selProjScnPath, inputCheck[0])
@@ -1718,7 +1731,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     passToken = True
 
         theCmd = 'mkdir {}'.format(newPath)
-        print(theCmd)
+        self.printEcho(theCmd)
         os.system(theCmd)
 
         self.listWidget_1.addItem(inputCheck[0])
@@ -1729,14 +1742,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print ('\ndef >>>>> createNewWIP2')
 
         self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, self.selTask, self.subDict[self.selProjWipCode])
-        print(self.selProjScnShotTaskWIPPath)
+        self.printEcho(self.selProjScnShotTaskWIPPath)
 
 
         newWipName = (self.selShot + "_" + self.selTask + "_" + self.subDict[self.selProjWipCode] + "_v0000" + wipExtension)
-        print(newWipName)
+        self.printEcho(newWipName)
 
         if nuke.Root().modified() == True:
-            print('current changes have not yet been saved!')
+            self.printEcho('current changes have not yet been saved!')
             nuke.scriptClose() ### pop a dialog instead of close.
             if nuke.Root().modified() == False:
 
@@ -1768,36 +1781,36 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print('\ndef >>>>> useCurrentWIP')
 
         if nuke.Root().modified() == True:
-            print('current changes have not yet been saved!')
+            self.printEcho('current changes have not yet been saved!')
             nuke.scriptClose() ### pop a dialog instead of close.
             if nuke.Root().modified() == False:
 
                 self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, self.selTask, self.subDict[self.selProjWipCode])
-                print(self.selProjScnShotTaskWIPPath)
+                self.printEcho(self.selProjScnShotTaskWIPPath)
 
 
                 newWipName = (self.selShot + "_" + self.selTask + "_" + self.subDict[self.selProjWipCode] + "_v0000" + wipExtension)
-                print(newWipName)
+                self.printEcho(newWipName)
                 saveName = os.path.join(self.selProjScnShotTaskWIPPath,newWipName)
-                print(saveName)
+                self.printEcho(saveName)
                 nuke.scriptSaveAs(saveName)
 
-                print(nuke.root()['name'].value())
-                print(os.path.dirname( nuke.root().name() ))
+                self.printEcho(nuke.root()['name'].value())
+                self.printEcho(os.path.dirname( nuke.root().name() ))
                 self.dialogUi.close()
         else:
             self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, self.selTask, self.subDict[self.selProjWipCode])
-            print(self.selProjScnShotTaskWIPPath)
+            self.printEcho(self.selProjScnShotTaskWIPPath)
 
 
             newWipName = (self.selShot + "_" + self.selTask + "_" + self.subDict[self.selProjWipCode] + "_v0000" + wipExtension)
-            print(newWipName)
+            self.printEcho(newWipName)
             saveName = os.path.join(self.selProjScnShotTaskWIPPath,newWipName)
-            print(saveName)
+            self.printEcho(saveName)
             nuke.scriptSaveAs(saveName)
 
-            print(nuke.root()['name'].value())
-            print(os.path.dirname( nuke.root().name() ))
+            self.printEcho(nuke.root()['name'].value())
+            self.printEcho(os.path.dirname( nuke.root().name() ))
             self.dialogUi.close()
 
             self.updateCurrentOpeningLocationPath()
@@ -1822,7 +1835,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print('\ndef >>>>> checkCurrentUnsaveStatus')
         if in_nuke:
             if nuke.Root().modified() == True:
-                print('current changes have not yet been saved!')
+                self.printEcho('current changes have not yet been saved!')
                 nuke.scriptClose() ### pop a dialog instead of close.
                 if nuke.Root().modified() == False:
                     nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
@@ -1850,7 +1863,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         if self.currentOpeningLocationPath == '':
             self.currentOpeningLocationPath = '-NONE-'
-        print(self.currentOpeningLocationPath)
+        self.printEcho(self.currentOpeningLocationPath)
         self.lineEdit_Location_2.setText(self.currentOpeningLocationPath)
 
     def createShotNewTask(self):
@@ -1858,7 +1871,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         folderList = ['cache', 'daily/yyyymmdd', 'notes', 'preview', self.subDict[self.selProjPublishCode], 'research', 'textures/PSD', 'version', self.subDict[self.selProjWipCode]]
         taskName = str(input('Please input New Task Name :'))
         for folder in folderList:
-            print(os.path.join(self.selProjScnShotTaskPath, taskName, folder))
+            self.printEcho(os.path.join(self.selProjScnShotTaskPath, taskName, folder))
             os.makedirs(os.path.join(self.selProjScnShotTaskPath, taskName, folder))
         self.listWidget_3.addItem(str(taskName))
 
@@ -1881,9 +1894,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             nuke.Root().knob('fps').setValue(float(bigKInfo.currentShotFrameFps()))
             self.nukeUpdateMetadataNodeFps()
 
-            print(nuke.Root().knob('first_frame').value())
-            print(nuke.Root().knob('last_frame').value())
-            print(nuke.Root().knob('fps').value())
+            self.printEcho(nuke.Root().knob('first_frame').value())
+            self.printEcho(nuke.Root().knob('last_frame').value())
+            self.printEcho(nuke.Root().knob('fps').value())
 
             #nuke.message('Done.')
             QMessageBox.information(self, 'message', "Done.\nAll fps in output <Metadata Node> aligned to Project Setting.")
@@ -1927,20 +1940,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             # QMessageBox ref: https://pythonspot.com/pyqt5-messagebox/
             QMessageBox.information(self, 'message', "no shot is selected.")
             '''if buttonReply == QMessageBox.Yes:
-                print('Yes clicked.')
+                self.printEcho('Yes clicked.')
             else:
-                print('No clicked.')'''
+                self.printEcho('No clicked.')'''
 
 
 
 
     def createShotNewTaskAction(self):
         print('\ndef >>>>> createShotNewTaskAction')
-        print(self.createShotNewTaskUi.lineEdit.text())
+        self.printEcho(self.createShotNewTaskUi.lineEdit.text())
         folderList = ['cache', 'daily/yyyymmdd', 'notes', 'preview', self.subDict[self.selProjPublishCode], 'research', 'textures/PSD', 'version', self.subDict[self.selProjWipCode]]
         taskName = self.createShotNewTaskUi.lineEdit.text()
         for folder in folderList:
-            print(os.path.join(self.selProjScnShotTaskPath, taskName, folder))
+            self.printEcho(os.path.join(self.selProjScnShotTaskPath, taskName, folder))
             os.makedirs(os.path.join(self.selProjScnShotTaskPath, taskName, folder))
         self.listWidget_3.addItem(str(taskName))
         self.createShotNewTaskUi.close()
@@ -1952,11 +1965,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def tempchecklist2selected(self):
         print('\ndef >>>>> tempchecklist2selected')
         status = self.listWidget_2.currentRow()
-        print(status)
+        self.printEcho(status)
 
     def compLatestRvAction(self):
         print('\ndef >>>>> compLatestRvAction')
-        print(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output'))
+        self.printEcho(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output'))
         thePath = os.path.join(self.selProjScnShotTaskPath, 'comp', 'output')
         if self.listWidget_2.currentRow() > -1:
             try:
@@ -1964,18 +1977,18 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             except:
                 QMessageBox.information(self, 'message', 'Standard "Comp" & "Output" folder not found.')
 
-            print(folderList)
+            self.printEcho(folderList)
             listSeq = []
             for i in folderList:
                 if (len(i) <= 5) and (i[0] == 'v') and i[1::].isnumeric():
-                    print(i)
-                    print(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
+                    self.printEcho(i)
+                    self.printEcho(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
                     if os.path.isdir(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i)):
                         listSeq.append(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
             listSeq.sort()
-            print(listSeq)
+            self.printEcho(listSeq)
             if len(listSeq) > 0:
-                print(listSeq[-1])
+                self.printEcho(listSeq[-1])
                 subprocess.Popen([rvPath, listSeq[-1]])
             else:
                 QMessageBox.information(self, 'message', r'No folder in ...\comp\output')
@@ -1985,7 +1998,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def shotAction1Action(self):
         print('\ndef >>>>> shotAction1Action')
         if self.listWidget_3.currentRow() > -1:
-            print(self.selTask)
+            self.printEcho(self.selTask)
             self.listWidget_3C_action(self.selTask)
         else:
             QMessageBox.information(self, 'message', "no task is selected.")
@@ -2003,13 +2016,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             #listDir = ['v00010', 'v00020']
 
             # Asked Lik decided only 'comp' task use this general RV preview. Therefore hardcode 'comp' & ' output' for now.
-            print(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output'))
+            self.printEcho(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output'))
             thePath = os.path.join(self.selProjScnShotTaskPath, 'comp', 'output')
             listDir = os.listdir(thePath)
             folderOnlyList = []
             for i in listDir:
-                print(i)
-                print(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
+                self.printEcho(i)
+                self.printEcho(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
                 if os.path.isdir(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i)):
                     folderOnlyList.append(i)
             folderOnlyList.sort(reverse=True)
@@ -2038,8 +2051,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         else:
             chosenVer = inItem[0].text()
 
-        print('chosenVer: ')
-        print(chosenVer)
+        self.printEcho('chosenVer: ')
+        self.printEcho(chosenVer)
 
 
         def isExrFormat(inPath):
@@ -2057,27 +2070,27 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             for i in allFiles:
                 if i.split('.')[-1] == 'exr' or i.split('.')[-1] == 'EXR':
-                    print(i)
+                    self.printEcho(i)
                     exrFormat = True
-                    print(exrFormat)
+                    self.printEcho(exrFormat)
                 elif i.split('.')[-1] == 'png' or i.split('.')[-1] == 'PNG':
-                    print(i)
+                    self.printEcho(i)
                     exrFormat = True
-                    print(exrFormat)
+                    self.printEcho(exrFormat)
 
                 elif i.split('.')[-1] == 'tmp' or i.split('.')[-1] == 'TMP':
-                    print(i)
-                    print('pass')
+                    self.printEcho(i)
+                    self.printEcho('pass')
                     pass
                 else:
-                    print(i)
+                    self.printEcho(i)
                     exrFormat = False
-                    print(exrFormat)
+                    self.printEcho(exrFormat)
                     break
 
             return exrFormat
 
-        print(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output'))
+        self.printEcho(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output'))
         thePath = os.path.join(self.selProjScnShotTaskPath, 'comp', 'output')
         if self.listWidget_2.currentRow() > -1:
             try:
@@ -2085,28 +2098,28 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             except:
                 QMessageBox.information(self, 'message', 'Standard "Comp" & "Output" folder not found.')
 
-            print(folderList)
+            self.printEcho(folderList)
 
             if chosenVer == None:
                 listSeq = []
                 for i in folderList:
-                    print('i : ')
-                    print(i)
+                    self.printEcho('i : ')
+                    self.printEcho(i)
                     if (len(i) <= 5) and (i[0] == 'v') and i[1::].isnumeric():
-                        print(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
+                        self.printEcho(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
                         if os.path.isdir(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i)):
                             listSeq.append(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', i))
                             latestVersion = i
                 listSeq.sort()
-                print(listSeq)
-                print(latestVersion)
+                self.printEcho(listSeq)
+                self.printEcho(latestVersion)
                 LatestVerPath = listSeq[-1]
                 verType = 'CompMaster'
             else:
                 latestVersion = chosenVer
                 LatestVerPath = os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', latestVersion)
-                print('chosenVer !=, print(LatestVerPath) :')
-                print(LatestVerPath)
+                self.printEcho('chosenVer !=, print(LatestVerPath) :')
+                self.printEcho(LatestVerPath)
                 listSeq = [LatestVerPath]
 
                 if (len(latestVersion) <= 5) and (latestVersion[0] == 'v') and latestVersion[1::].isnumeric():
@@ -2114,7 +2127,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 else:
                     verType = 'LayerMask'
 
-                print(verType)
+                self.printEcho(verType)
 
             if len(listSeq) > 0:
 
@@ -2145,20 +2158,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def createRvFile(self, inLatestVerPath, inLatestVer):
 
         print('\ndef >>>>> createRvFile')
-        print(inLatestVerPath)
-        print(inLatestVer)
+        self.printEcho(inLatestVerPath)
+        self.printEcho(inLatestVer)
 
         def getMetaData():
-            print('\n   def >>>>> getMetaData')
+            self.printEcho('\n   def >>>>> getMetaData')
 
             import subprocess, os
 
             def getFrames(inPath):
-                print('\n       def >>>>> getFrames')
+                self.printEcho('\n       def >>>>> getFrames')
                 allFiles = os.listdir(inPath)
-                print(inPath)
+                self.printEcho(inPath)
                 onlyFiles = []
-                print(allFiles)
+                self.printEcho(allFiles)
                 for i in allFiles:
                     if os.path.isfile(os.path.join(inPath, i)):
                         onlyFiles.append(i)
@@ -2167,14 +2180,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 return onlyFiles
 
             theFrameList = getFrames(inLatestVerPath)
-            print('theFrameList : {}'.format(theFrameList))
+            self.printEcho('theFrameList : {}'.format(theFrameList))
 
             # to avoid first frame is .tmp which will fail to read meta data
             for frame in theFrameList:
                 if frame.split('.')[-1] == 'tmp' or frame.split('.')[-1] == 'TMP':
                     theFrameList.remove(frame)
 
-            print('theFrameList after del tmp check: {}'.format(theFrameList))
+            self.printEcho('theFrameList after del tmp check: {}'.format(theFrameList))
 
             FrameStartFullName = theFrameList[0].split('.')
             FrameEndFullName = theFrameList[-1].split('.')
@@ -2204,17 +2217,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             # carl.1001-1010@@@@@.exr
             rvStringName = (FrameFrontName + '.' + str(int(FrameFirstFrameNo)) + '-' + str(int(FrameEndFrameNo)) + symbol + '.' + FrameExtension)
-            print('rvStringName : ' + rvStringName)
+            self.printEcho('rvStringName : ' + rvStringName)
 
 
             #externalToolPath = r'N:\BigKeeper\py\externalTool'
             input_file = os.path.normpath((os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', inLatestVer, theFrameList[0])))
-            print(input_file)
+            self.printEcho(input_file)
 
 
 
             exec_command = os.path.normpath(os.path.join(externalToolPath, r'exiftool.exe'))
-            print(exec_command)
+            self.printEcho(exec_command)
             #exec_command = r'N:\BigKeeper\py\externalTool\exiftool.exe'
             #input_file = r'N:\mnt\job\18012WOF\WorkingFile\WOF\scenes\hologramSeq\ac0343\components\comp\output\v0015\ac0343.1001.exr'
             arg1 = r'-all'
@@ -2223,9 +2236,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             arg4 = r'-Bigkframepersecond'
             arg0 = r'-s2' # s1--tag names instead of descriptions   s2--no extra spaces    s3--values only
 
-            print('before run')
+            self.printEcho('before run')
             process = subprocess.Popen([exec_command, input_file, arg1, arg0], stdout = subprocess.PIPE, stderr = subprocess.STDOUT, universal_newlines = True)
-            print('after run')
+            self.printEcho('after run')
 
             # store data in dict way
             infoDict = {}
@@ -2234,8 +2247,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 line = i.strip().split(':')     #splite Tag as line[0], value as line[1]. (line is <list> type)
                 infoDict[line[0].strip()] = line[1].strip()     # line[0] as dict's key, line[1] as value.
 
-            print('infoDict:')
-            print(infoDict)
+            self.printEcho('infoDict:')
+            self.printEcho(infoDict)
 
             metaData = []
 
@@ -2267,16 +2280,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             except:
                 defaultText = ""
             answerFolder = QInputDialog.getText(self, 'Input Folder Name', 'To create instance-shortcut for comment folder,\nformat: <yyyymmdd>\n\nor\n\nPress cancel to skip.',QLineEdit.Normal, defaultText)
-            print(answerFolder)
+            self.printEcho(answerFolder)
 
             return answerFolder
 
         def createShortCut(folderName, inShotName, iniRvVersion, inRvFullPathName):
             print('\n   def >>>>> createShortCut')
-            print(self.subDict[self.selProjPath])
+            self.printEcho(self.subDict[self.selProjPath])
 
             targetShortCutPath = os.path.normpath(os.path.join(self.subDict[self.selProjPath], 'comment', folderName))
-            print(targetShortCutPath)
+            self.printEcho(targetShortCutPath)
             if not os.path.isdir(targetShortCutPath):
                 os.makedirs(targetShortCutPath)
 
@@ -2288,8 +2301,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             # sample: Shortcut.exe /f:"D:\toliet\Shortcut\myBNOpic2.lnk" /a:c /t:"D:\toliet\Shortcut\IMG_1459_BNO_N_U.jpg"
             #cmd = exec_command + " " + r'/f:"D:\toliet\Shortcut\myBNOpic6.lnk" /a:c /t:"D:\toliet\Shortcut\IMG_1459_BNO_N_U.jpg"'
             cmd = exec_command + argument_command
-            print('exec_command :' + exec_command)
-            print('cmd :' + cmd)
+            self.printEcho('exec_command :' + exec_command)
+            self.printEcho('cmd :' + cmd)
 
             #subprocess.Popen([exec_command, linkName, actionMode, sourceName])
             os.system(cmd)
@@ -2303,7 +2316,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         with open(rvTemplate) as f:
             data = f.readlines()
 
-        print('***************************************')
+        self.printEcho('***************************************')
 
         MetaData = getMetaData()
         inWidth = MetaData[0]
@@ -2325,8 +2338,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         lineForEndFramePlus1 = [598]
         lineForRvTimeLineStartEnd = [17, 18, 279]
 
-        print(inRvStringName[0:-4:1])
-        print(RvStringMovie)
+        self.printEcho(inRvStringName[0:-4:1])
+        self.printEcho(RvStringMovie)
 
         #string movie = "N:/mnt/job/18006Chery/WorkingFile/Chery/scenes/turnTable/ttb0030/components/comp/output/v0015/ttb0030.1-10030@@@@@@@.tga"
         for line in lineForWidthHeight:
@@ -2357,7 +2370,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         writePath = str(os.path.join(self.selProjScnShotTaskPath, 'comp', 'output', inLatestVer + '.rv')).replace("\\", "/")
         #writePath = writePath.replace("\\", "/")
-        print('writePath is :' + writePath)
+        self.printEcho('writePath is :' + writePath)
         with open(writePath, 'w') as f:
             f.writelines(data)
 
@@ -2383,22 +2396,22 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             if i.name()[0:len(mergePrefix)] == mergePrefix:
                 sameNodeNameList.append(i.name())
 
-        print('sameNodeNameList :')
-        print(sameNodeNameList)
+        self.printEcho('sameNodeNameList :')
+        self.printEcho(sameNodeNameList)
         if len(sameNodeNameList) > 0:
             # find out the Largest number
             seperator = '_' + nodeClassName + '_'
-            print('seperator')
+            self.printEcho('seperator')
 
             allNumbers = []
             for i in sameNodeNameList:
                 splitName = i.split(seperator)
-                print(seperator)
-                print('splitName :')
-                print(splitName)
+                self.printEcho(seperator)
+                self.printEcho('splitName :')
+                self.printEcho(splitName)
                 allNumbers.append(int(splitName[-1]))
             allNumbers.sort()
-            print(allNumbers)
+            self.printEcho(allNumbers)
             LargestNumber = int(allNumbers[-1])
         else:
             LargestNumber = 0
@@ -2414,19 +2427,19 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         dedictatedPrefix = InPrefix
         nodeClassName = InNodeClassName
 
-        print('nodeClassName :')
-        print(nodeClassName)
-        print('dedictatedPrefix :')
-        print(dedictatedPrefix)
+        self.printEcho('nodeClassName :')
+        self.printEcho(nodeClassName)
+        self.printEcho('dedictatedPrefix :')
+        self.printEcho(dedictatedPrefix)
 
         targetNumber = self.findNodeLargestNumber(InPrefix = dedictatedPrefix, InNodeClassName = nodeClassName)
-        print('targetNumber :')
-        print(targetNumber)
+        self.printEcho('targetNumber :')
+        self.printEcho(targetNumber)
 
         NewNodeName = dedictatedPrefix + '_' + nodeClassName + '_' + str(targetNumber + 1)
 
-        print('NewNodeName :')
-        print(NewNodeName)
+        self.printEcho('NewNodeName :')
+        self.printEcho(NewNodeName)
         #newCreatedNode = nuke.nodes.nodeClassName(name=NewNodeName)
         #newCreatedNode.setInput(1, userSelNode)
         newCreatedNode = nuke.createNode(nodeClassName)
@@ -2447,8 +2460,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def nukeCheckKnobContentUnique(self, inClass, inKnob, inContent):
         print('\ndef >>>>> nukeCheckPathUnique')
 
-        print('inContent is :')
-        print(inContent)
+        self.printEcho('inContent is :')
+        self.printEcho(inContent)
         allNodes = nuke.allNodes(filter=inClass)
         nodeList = []
         duplicatedNodeList = []
@@ -2456,13 +2469,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         for i in allNodes:
             knobValue = os.path.normpath(i.knob(inKnob).getValue())
             nodeList.append(i)
-            print(inContent)
-            print(knobValue)
+            self.printEcho(inContent)
+            self.printEcho(knobValue)
             if inContent in knobValue:
                 duplicatedNodeList.append(i.name())
 
-        print(nodeList)
-        print(duplicatedNodeList)
+        self.printEcho(nodeList)
+        self.printEcho(duplicatedNodeList)
 
         if len(duplicatedNodeList) > 0:
             isUnique = False
@@ -2476,7 +2489,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def nukeAskSuffix(self):
         bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
-        print(bigKInfo.currentCompIniSuffix())
+        self.printEcho(bigKInfo.currentCompIniSuffix())
 
 
 
@@ -2487,17 +2500,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         answerName = answerSuffix = readyToCreate = None
 
         try:
-            print(args)
-            print(args[0])
+            self.printEcho(args)
+            self.printEcho(args[0])
         except:
             args=[None]
-            print('no args, assigned {} instead.'.format(args[0]))
+            self.printEcho('no args, assigned {} instead.'.format(args[0]))
 
         try:
             orignalSelNode = nuke.selectedNode()
-            print('original :::')
-            print(orignalSelNode)
-            print(type(orignalSelNode))
+            self.printEcho('original :::')
+            self.printEcho(orignalSelNode)
+            self.printEcho(type(orignalSelNode))
         except:
             orignalSelNode = None
 
@@ -2516,7 +2529,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             else:
                 bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
                 if inType == 'CompMaster':
-                    print(inType)
+                    self.printEcho(inType)
 
                     answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
                     frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
@@ -2528,7 +2541,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
                 elif inType == 'CompMasterToV':
-                    print(inType)
+                    self.printEcho(inType)
 
                     answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
                     frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
@@ -2541,9 +2554,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     backdropLabel = inType
 
                 elif inType == 'LayerMask':
-                    print(inType)
+                    self.printEcho(inType)
                     answerName, readyToCreate = QInputDialog.getText(self, 'sub-name', 'Input a sub-name for sub-folderName and sub-framename', QLineEdit.Normal)
-                    print(answerName)
+                    self.printEcho(answerName)
                     if readyToCreate == True:
                         answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
 
@@ -2555,9 +2568,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                 elif inType == 'PreRend':
                     # *** unknow bug, this elif section need to keep. If this section deleted, the 'Prerend' section will sytax error. To Be Fix.
-                    print(inType)
+                    self.printEcho(inType)
                     answerName, readyToCreate = QInputDialog.getText(self, 'sub-name', 'Input a sub-name for sub-folderName and sub-framename', QLineEdit.Normal)
-                    print(answerName)
+                    self.printEcho(answerName)
 
                     frameName = str(bigKInfo.currentShot()) + '_' + answerName + '.%04d' + '.exr'
                     verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
@@ -2568,11 +2581,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     # *** unknow bug, this elif section need to keep. If this section deleted, the 'Prerend' section will sytax error. To Be Fix.
 
                 elif inType == 'Prerend':
-                    print(inType)
+                    self.printEcho(inType)
                     answerName = args[0]
                     readyToCreate = True
 
-                    print('3 self.prerendKeyword is {}'.format(answerName))
+                    self.printEcho('3 self.prerendKeyword is {}'.format(answerName))
 
                     answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
                     frameName = str(bigKInfo.currentShot()) + '_' + answerName + answerSuffix + '.%04d' + '.exr'
@@ -2583,9 +2596,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-                print('checkPath is : ' + checkPath)
+                self.printEcho('checkPath is : ' + checkPath)
                 checkPath = str(checkPath + os.sep)
-                print('checkPath is : ' + checkPath)
+                self.printEcho('checkPath is : ' + checkPath)
                 isUnique = self.nukeCheckKnobContentUnique('Write', 'file', checkPath)
                 if isUnique:
 
@@ -2606,20 +2619,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         pass
 
                     allNewNodes = [orignalSelNode, newCreatedNodeMetadata, newCreatedNode]
-                    print(newCreatedNodeMetadata)
-                    print('***')
-                    print(newCreatedNode)
-                    print('*************allNewNodes : ***************************')
-                    print(allNewNodes)
+                    self.printEcho(newCreatedNodeMetadata)
+                    self.printEcho('***')
+                    self.printEcho(newCreatedNode)
+                    self.printEcho('*************allNewNodes : ***************************')
+                    self.printEcho(allNewNodes)
 
                     for i in allNewNodes:
                         i.setSelected(True)
 
                     newBD = self.nukeBornBackdrop(allNewNodes, backdropLabel, inType, '')
 
-                    print('original After:::')
+                    self.printEcho('original After:::')
                 else:
-                    print('Not Unique Path.')
+                    self.printEcho('Not Unique Path.')
 
                 # setSelected to let user move the position of the created nodes
                 for i in allNewNodes:
@@ -2665,7 +2678,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             labelText = inLabelText
 
         allNode = nuke.selectedNode()
-        print('nodes :' + str(len(allNode)))
+        self.printEcho('nodes :' + str(len(allNode)))
 
 
 
@@ -2722,7 +2735,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         for i in allNodes:
             if 'bigK_' in i.name():
-                print(i.name())
+                self.printEcho(i.name())
 
                 newdata = "{set bigkframepersecond " + str(fpsFromProjectSetting) + "}" + '\n' + "{set bigk_nukeScript_From " + str(filenameWhenSave) + "}"
                 i['metadata'].fromScript(newdata)
@@ -2736,7 +2749,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         allNodes = nuke.allNodes(filter='BackdropNode')
         for checkNode in allNodes:
-            print(checkNode['name'].value())
+            self.printEcho(checkNode['name'].value())
 
             if checkNode['name'].value() == 'bigK_lightPublish':
                 isAlreadyExist = True
@@ -2749,7 +2762,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             for node in allNodes:
                 allSelNodesName.append(node['name'].value())
 
-            print(allSelNodesName)
+            self.printEcho(allSelNodesName)
 
             backdropLabel= 'for LightPublish'
             inType = 'LightPublish'
@@ -2785,11 +2798,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-        print(nodesInBackdrop)
+        self.printEcho(nodesInBackdrop)
 
         copySourcePaths = []
         for node in nodesInBackdrop:
-            print(node['file'].value())
+            self.printEcho(node['file'].value())
             copySourcePaths.append(node['file'].value())
 
         self.versionUpSaveWIP(False)
@@ -2798,7 +2811,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         currentVerNumber = bigKInfo.currentThisWipVerNum()
         currentTaskPath = bigKInfo.currentTaskPath()
 
-        print(currentVerNumber)
+        self.printEcho(currentVerNumber)
 
 
         QApplication.processEvents()
@@ -2827,10 +2840,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         '''
 
         for sourcePath in copySourcePaths:
-            print('\n\n\n\n\n************************************************')
+            self.printEcho('\n\n\n\n\n************************************************')
             sourceReadNodeFilePath = pathlib.Path(sourcePath)
-            print(sourceReadNodeFilePath)
-            print(sourceReadNodeFilePath.parent)
+            self.printEcho(sourceReadNodeFilePath)
+            self.printEcho(sourceReadNodeFilePath.parent)
 
 
             '''
@@ -2841,11 +2854,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 sourceSeqBaseName = sourceReadNodeFilePath.stem
             '''
             sourceSeqBaseName = findSeqBaseName(sourceReadNodeFilePath)
-            print('\n\nsourceSeqBaseName : {}\n\n'.format(sourceSeqBaseName))
+            self.printEcho('\n\nsourceSeqBaseName : {}\n\n'.format(sourceSeqBaseName))
 
             #find original version path to be copied to
             originalVerNumber = os.path.normpath(sourcePath).split(os.path.sep)[12]
-            print(originalVerNumber)
+            self.printEcho(originalVerNumber)
 
             #orignalVerNum =
 
@@ -2869,17 +2882,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     #print(findSeqBaseName(jointFilePath))
                     if findSeqBaseName(jointFilePath) == sourceSeqBaseName:
                         targetFiles.append(libPath)
-                        print('                                      append >>> {}\n'.format(libPath))
+                        self.printEcho('                                      append >>> {}\n'.format(libPath))
                     else:
-                        print('                                                            Skipped. --- seqBasename not match.\n')
+                        self.printEcho('                                                            Skipped. --- seqBasename not match.\n')
                         pass
                 else:
-                    print('                                                            Skipped. --- It is a folder\n')
+                    self.printEcho('                                                            Skipped. --- It is a folder\n')
                     pass
 
-            print('targetFiles :')
+            self.printEcho('targetFiles :')
             for line in targetFiles:
-                print(line)
+                self.printEcho(line)
 
 
 
@@ -2913,24 +2926,24 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-            print('>>> start {}'.format(destinationVerPath))
+            self.printEcho('>>> start {}'.format(destinationVerPath))
             if not os.path.isdir(destinationVerPath):
                 os.makedirs(destinationVerPath)
 
             counter += 1
             for copyFile in targetFiles:
-                msgBox.setText('Publishing {} of {}:\n\n <......\{}\{}\n\n{}>'.format(counter, totalPaths, os.path.basename(sourceReadNodeFilePath.parent.parent), os.path.basename(sourceReadNodeFilePath.parent), copyFile))
+                msgBox.setText('Publishing < {} of {} >:\n\n <......\{}\{}>\n\n{}'.format(counter, totalPaths, os.path.basename(sourceReadNodeFilePath.parent.parent), os.path.basename(sourceReadNodeFilePath.parent), copyFile))
                 QApplication.processEvents()
                 #destinationPath = shutil.copytree(sourceReadNodeFilePath.parent, destinationVerPath)
-                print(destinationVerPath)
+                self.printEcho(destinationVerPath)
                 destinationPath = shutil.copy(copyFile, destinationVerPath)
                 QApplication.processEvents()
-            print('<<< done. {}'.format(destinationPath))
+            self.printEcho('<<< publish-copy is done. {}'.format(destinationPath))
 
 
         QApplication.processEvents()
 
-        QMessageBox.information(self, 'message', 'Publish done.')
+        QMessageBox.information(self, 'message', '< {} of {} > Publish-Copy done.'.format(counter, totalPaths))
         msgBox.close()
 
 
@@ -2975,9 +2988,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         # Gather all the nodes in the scene
         allNodes = nuke.allNodes()
-        print(allNodes)
-        print(len(allNodes))
-        print(type(allNodes))
+        self.printEcho(allNodes)
+        self.printEcho(len(allNodes))
+        self.printEcho(type(allNodes))
         sameNodeNameList = []
 
         # sort out only (bigK + targetClassName)nodes, filter by .name()
@@ -3005,7 +3018,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 #create a list containing "node" instead of nodeName, for coding convinient
                 allFilteredNodes.append(nuke.toNode(i.name()))
 
-        print(allFilteredNodes)
+        self.printEcho(allFilteredNodes)
 
         '''
         # To avoid, in case, previous version is copy and paste from window explorer.
@@ -3019,34 +3032,34 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         for i in allFilteredNodes:
 
-            print(f"i.knob('file').value() : {i.knob('file').value()}")
+            self.printEcho(f"i.knob('file').value() : {i.knob('file').value()}")
             originalContent = os.path.normpath(i.knob('file').value())
 
 
-            print('originalContent :')
-            print(originalContent)
+            self.printEcho('originalContent :')
+            self.printEcho(originalContent)
 
             if r'\vDrive' in originalContent:
                 seperator = r'\vDrive'
-                print(f'vDrive Node Found. -- {seperator}')
+                self.printEcho(f'vDrive Node Found. -- {seperator}')
 
                 basename = os.path.basename(originalContent)
-                print(f'basename : {basename}')
+                self.printEcho(f'basename : {basename}')
                 basenameFull = basename.split('.')
-                print(f'basenameFull : {basenameFull}')
+                self.printEcho(f'basenameFull : {basenameFull}')
                 basenameFullShotName = basenameFull[0].split('_')
-                print(f'basenameFullShotName : {basenameFullShotName}')
+                self.printEcho(f'basenameFullShotName : {basenameFullShotName}')
 
                 splitContent = originalContent.split(seperator)
-                print(f'splitContent : {splitContent}')
+                self.printEcho(f'splitContent : {splitContent}')
 
                 splitContentEnd = splitContent[-1]
-                print(f'splitContentEnd : {splitContentEnd}')
+                self.printEcho(f'splitContentEnd : {splitContentEnd}')
                 splitContentEnd = splitContentEnd.replace(basenameFullShotName[0], currentShotname)
-                print(f'splitContentEnd : {splitContentEnd}')
+                self.printEcho(f'splitContentEnd : {splitContentEnd}')
 
                 vDriveFolder = self.vDrivePathRead(os.path.join(bigKInfo.currentProjWorkPath(), 'bigPathsProject.ini'), 'BIGPATHS', 'vOutput')
-                print(f'vDriveFolder : {vDriveFolder}')
+                self.printEcho(f'vDriveFolder : {vDriveFolder}')
 
                 updatedContent = str(os.path.normpath(vDriveFolder + splitContentEnd))
                 updatedContent = updatedContent.replace(os.sep, '/')
@@ -3054,35 +3067,35 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             else:
 
                 for keyword in seperatorKeywords:
-                    print(r'\{}\v'.format(keyword))
+                    self.printEcho(r'\{}\v'.format(keyword))
                     if r'\{}\v'.format(keyword) in originalContent:
                         seperator = r'\{}\v'.format(keyword)
-                        print(seperator)
+                        self.printEcho(seperator)
 
                 #To find out current frame name for both CompMaster(tsq0010) & LayerMask(tsq0010_shadow), store in basenameFullShotName[0]
                 basename = os.path.basename(originalContent)
-                print(f'basename : {basename}')
+                self.printEcho(f'basename : {basename}')
                 basenameFull = basename.split('.')
-                print(f'basenameFull : {basenameFull}')
+                self.printEcho(f'basenameFull : {basenameFull}')
                 basenameFullShotName = basenameFull[0].split('_')
-                print(f'basenameFullShotName : {basenameFullShotName}')
+                self.printEcho(f'basenameFullShotName : {basenameFullShotName}')
 
                 splitContent = originalContent.split(seperator)
-                print(f'splitContent : {splitContent}')
+                self.printEcho(f'splitContent : {splitContent}')
                 splitContentFront = splitContent[0]
                 splitVerNumber = splitContent[1][0:4]
                 splitContentEnd = splitContent[1][4::]
 
-                print('splitContentEnd is :')
-                print(splitContentEnd)
+                self.printEcho('splitContentEnd is :')
+                self.printEcho(splitContentEnd)
                 splitContentEnd = splitContentEnd.replace(basenameFullShotName[0], currentShotname)
 
                 newVerNumber = currentVerNumber
                 updatedContent = str(os.path.normpath(currentTaskPath + seperator + str(newVerNumber).zfill(4) + splitContentEnd))
                 updatedContent = updatedContent.replace(os.sep, '/')
 
-            print('updatedContent :')
-            print(updatedContent)
+            self.printEcho('updatedContent :')
+            self.printEcho(updatedContent)
 
             os.path.normpath
             i.knob('file').setValue(updatedContent)
@@ -3102,12 +3115,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         # ref : https://pythonspot.com/pyqt5-input-dialog/
         keepVers, VersOkPressed = QInputDialog.getInt(self, 'Input :', 'How many Latest VERSIONS to be kept and protected?', 10, 1, 10000, 1)
         if VersOkPressed:
-            print('keepVers inputed : %d' %keepVers)
+            self.printEcho('keepVers inputed : %d' %keepVers)
 
 
             keepDays, DaysOkPressed = QInputDialog.getInt(self, 'Input :', 'How many Latest DAYS to be kept and protected?', 30, 0, 10000, 1)
             if DaysOkPressed:
-                print('keepDays inputed : %d' %keepDays)
+                self.printEcho('keepDays inputed : %d' %keepDays)
 
                 showAskPath = True
                 for selectedScn in inScns:
@@ -3117,12 +3130,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     # Calculate boundary data (currentTime - KeepDays)
                     currentTimeStamp = datetime.datetime.now().timestamp()
                     currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.fromtimestamp(currentTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
-                    print(currentTimeStamp_YYYYmmddHHMMSS)
+                    self.printEcho(currentTimeStamp_YYYYmmddHHMMSS)
                     value_currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.strptime(currentTimeStamp_YYYYmmddHHMMSS , '%Y-%m-%d %H:%M:%S')
                     DayValue = datetime.timedelta(days=keepDays)
                     boundryDate = value_currentTimeStamp_YYYYmmddHHMMSS - DayValue
-                    print('boundryDate is : ')
-                    print(boundryDate)
+                    self.printEcho('boundryDate is : ')
+                    self.printEcho(boundryDate)
                     saveNameCurrentTimeStamp = 'toBeDel_' + selectedScn.text() + '_' + datetime.datetime.fromtimestamp(currentTimeStamp).strftime('-D%Y-%m-%d_T%H%M%S')
 
                     if showAskPath:
@@ -3136,22 +3149,22 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     if saveFullPath != None:
 
                         sourceCheckPath = os.path.join(self.selProjScnPath, selectedScn.text())
-                        print('<><><><><>')
-                        print(selectedScn.text())
-                        print(sourceCheckPath)
-                        print('<><><><><>')
+                        self.printEcho('<><><><><>')
+                        self.printEcho(selectedScn.text())
+                        self.printEcho(sourceCheckPath)
+                        self.printEcho('<><><><><>')
 
                         toBeDelList, toBeKeepList = self.cleanUpSortOutDelVers(sourceCheckPath, keepVers, keepDays)
 
 
 
-                        print('\ntoBeDelList is :')
+                        self.printEcho('\ntoBeDelList is :')
                         for i in toBeDelList:
-                            print(i)
+                            self.printEcho(i)
 
-                        print('\ntoBeKeepList is :')
+                        self.printEcho('\ntoBeKeepList is :')
                         for i in toBeKeepList:
-                            print(i)
+                            self.printEcho(i)
 
                         if isIncludeRenderSource == 'Yes':
                             toBeDelPlusRenderSourceList, toBeKeepPlusRenderSourceList = self.TraceRenderOutputFromKeepVersPath(toBeKeepList)
@@ -3169,14 +3182,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                     toBeDelList.remove(pathForSaftyCheck)
 
 
-                        print('\ntoBeDelList + toBeDelPlusRenderSourceList is :')
+                        self.printEcho('\ntoBeDelList + toBeDelPlusRenderSourceList is :')
                         for i in toBeDelList:
-                            print(i)
+                            self.printEcho(i)
 
 
                         totalSize = 0
 
-                        print()
+                        self.printEcho()
 
 
 
@@ -3186,30 +3199,30 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                         QApplication.processEvents()
                         for i in toBeDelList:
-                            print(i)
+                            self.printEcho(i)
                             size = self.cleanUpCheckFolderSize(i)
-                            print('Path : ' + i + '     Size in MB : ' + str(size/1024/1024))
+                            self.printEcho('Path : ' + i + '     Size in MB : ' + str(size/1024/1024))
                             totalSize += size
                             QApplication.processEvents()
                             #msgBox.setText(os.path.normpath(i))
                             msg = 'Path : ' + str(i) + '     Size in MB : ' + str(size/1024/1024)
                             msgBox.setText(msg)
 
-                        print()
+                        self.printEcho()
                         '''print('toBeDelList is :')
                         print(toBeDelList)
                         for i in toBeDelList:
                             print(i)
                         '''
 
-                        print()
-                        print('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate)))
-                        print('totalSize is :')
-                        print('totalSize in MB (to be deleted) : ' + str(totalSize/1024/1024))
-                        print('totalSize in GB (to be deleted) : ' + str(totalSize/1024/1024/1024))
+                        self.printEcho()
+                        self.printEcho('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate)))
+                        self.printEcho('totalSize is :')
+                        self.printEcho('totalSize in MB (to be deleted) : ' + str(totalSize/1024/1024))
+                        self.printEcho('totalSize in GB (to be deleted) : ' + str(totalSize/1024/1024/1024))
                         totalSortoutCompSizeGB  += totalSize/1024/1024/1024
                         timerEnd = datetime.datetime.now()
-                        print(timerEnd - timerStart)
+                        self.printEcho(timerEnd - timerStart)
 
                         headerContentList = []
                         headerContentList.append(str('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate))))
@@ -3271,23 +3284,23 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         msgBox.setStandardButtons(QMessageBox.NoButton)
         msgBox.show()
 
-        print('**********')
-        print(inPathRoot)
-        print('**********')
+        self.printEcho('**********')
+        self.printEcho(inPathRoot)
+        self.printEcho('**********')
 
         # for loop of each SHOT
         #for i in self.listShot:
         for i  in os.listdir(inPathRoot):
             thePath = os.path.join(inPathRoot, i)
-            print(thePath)
+            self.printEcho(thePath)
 
 
             theCompOutputPath = os.path.join(thePath, 'components', 'comp', 'output')
-            print(theCompOutputPath)
+            self.printEcho(theCompOutputPath)
 
             if os.path.isdir(theCompOutputPath):
                 tempDirs = os.listdir(theCompOutputPath)
-                print('tempDirs is : {} {}'.format(len(tempDirs), tempDirs))
+                self.printEcho('tempDirs is : {} {}'.format(len(tempDirs), tempDirs))
 
                 folderOnlyList = []
 
@@ -3308,8 +3321,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                         # to identify "CompMaster" and "_LayerMask"
                         previousJ = folderOnlyList[folderOnlyList.index(j)-1]
-                        print('j in folderOnlyList : {} in {}'.format(j, folderOnlyList))
-                        print('previousJ : {}'.format(previousJ))
+                        self.printEcho('j in folderOnlyList : {} in {}'.format(j, folderOnlyList))
+                        self.printEcho('previousJ : {}'.format(previousJ))
                         #print(f'j is {j}, index is {folderOnlyList.index(j)}, j-1 is {folderOnlyList[folderOnlyList.index(j)-1]}, j[0:5] is {j[0:5]}, previousJ is {previousJ[0:5]}')
 
 
@@ -3377,9 +3390,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         ###     Capri Modified on 20230308  --- End
 
 
-                print('folderOnlyList   : {} {}'.format(len(folderOnlyList), folderOnlyList))
-                print('keepFolderList   : {} {}'.format(len(keepFolderList), keepFolderList))
-                print('unKeepFolderList : {} {}'.format(len(unKeepFolderList), unKeepFolderList))
+                self.printEcho('folderOnlyList   : {} {}'.format(len(folderOnlyList), folderOnlyList))
+                self.printEcho('keepFolderList   : {} {}'.format(len(keepFolderList), keepFolderList))
+                self.printEcho('unKeepFolderList : {} {}'.format(len(unKeepFolderList), unKeepFolderList))
 
                 for l in keepFolderList:
                     keepVersPath.append(os.path.normpath(os.path.join(theCompOutputPath, l)))
@@ -3410,7 +3423,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         toBeDelRenderOutputList = []
 
         def extract_wipNumber(inText):
-            print('\n   def >>>>> extract_wipNumber')
+            self.printEcho('\n   def >>>>> extract_wipNumber')
             num_str = ''
             counter = 0
             for char in inText:
@@ -3454,11 +3467,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             all_file_paths = []
 
             # Extract file paths from script file
-            print(f'==={InPath}===')
-            print("Processing script:", InPath)
+            self.printEcho(f'==={InPath}===')
+            self.printEcho("Processing script:", InPath)
             file_paths = extract_file_paths(InPath)
             all_file_paths.extend(file_paths)
-            print("Script processed.")
+            self.printEcho("Script processed.")
 
             '''
             #Print the list of file paths
@@ -3475,13 +3488,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             theKeepTaskPath = os.path.join(inKeepPathComponent, taskName)
 
             def findAllVerInRenderImagePath(inPath):
-                print('\n       def >>>>> findAllVerInRenderImagePath')
+                self.printEcho('\n       def >>>>> findAllVerInRenderImagePath')
 
                 theLibPath = pathlib.Path(inPath)
-                print('inPath :{}'.format(inPath))
+                self.printEcho('inPath :{}'.format(inPath))
                 #print('theLibPath :{}'.format(theLibPath))
-                print('theLibPath.parents[-12] :{}'.format(theLibPath.parents[-12]))
-                print('\n')
+                self.printEcho('theLibPath.parents[-12] :{}'.format(theLibPath.parents[-12]))
+                self.printEcho('\n')
 
                 allVerInRenderImagePath = os.listdir(theLibPath.parents[-12])
                 onlyVerFolderPath = []
@@ -3494,11 +3507,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     if os.path.isdir(checkPath):
                         onlyVerFolderPath.append(checkPath)
 
-                print('\nallVerInRenderImagePath :')
-                print(allVerInRenderImagePath)
-                print('\nreturn:')
-                print('onlyVerFolderPath :')
-                print(onlyVerFolderPath)
+                self.printEcho('\nallVerInRenderImagePath :')
+                self.printEcho(allVerInRenderImagePath)
+                self.printEcho('\nreturn:')
+                self.printEcho('onlyVerFolderPath :')
+                self.printEcho(onlyVerFolderPath)
 
 
                 return onlyVerFolderPath
@@ -3512,10 +3525,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             for i in inKeepPathList:
                 theKeepLibPath = pathlib.Path(i)
 
-                print('theKeepLibPath              :{}'.format(theKeepLibPath))
+                self.printEcho('theKeepLibPath              :{}'.format(theKeepLibPath))
 
                 if  len(theKeepLibPath.parents) < 13:
-                    print('No. of folders level less than pipeline structure, skipped.\n')
+                    self.printEcho('No. of folders level less than pipeline structure, skipped.\n')
                     pass
                 else:
 
@@ -3524,11 +3537,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         print('theKeepLibPath.parents[-13] :{}'.format(theKeepLibPath.parents[-13]))
 
                         if os.path.normpath(theKeepLibPath.parents[-11]) != os.path.normpath(theKeepTaskPath) :   #To exclude from same TASK. Becoz artist may readIn previous nuke render output to QC.
-                            print('theKeepTaskPath             :{}'.format(theKeepTaskPath))
-                            print('vs')
-                            print('theKeepLibPath.parents[-11] :{}'.format(theKeepLibPath.parents[-11]))
-                            print('The RenderImage Path is from Different Task, OK.\n')
-                            print('theKeepLibPath.parents[-13] :',theKeepLibPath.parents[-13])
+                            self.printEcho('theKeepTaskPath             :{}'.format(theKeepTaskPath))
+                            self.printEcho('vs')
+                            self.printEcho('theKeepLibPath.parents[-11] :{}'.format(theKeepLibPath.parents[-11]))
+                            self.printEcho('The RenderImage Path is from Different Task, OK.\n')
+                            self.printEcho('theKeepLibPath.parents[-13] :',theKeepLibPath.parents[-13])
 
                             if str(os.path.normpath(i)).startswith(str(inKeepPathComponent)):   #To include only within the same shot. For saftly, Exclude out of the same shot on-purpose.
 
@@ -3537,32 +3550,32 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                     allVersionPath.append(os.path.normpath(j))
 
                                 if os.path.normpath(theKeepLibPath.parents[-13]) in keepVersionPathList:
-                                    print('os.path.normpath(theKeepLibPath.parents[-13])  in keepVersionPathList, skipped.\n')
+                                    self.printEcho('os.path.normpath(theKeepLibPath.parents[-13])  in keepVersionPathList, skipped.\n')
                                     pass
                                 else:
                                     keepVersionPathList.append(os.path.normpath(theKeepLibPath.parents[-13]))    #keepVersionPathList created here.
 
                             else:
-                                print('The RenderImage Path is out of the same shot, skipped.\n')
+                                self.printEcho('The RenderImage Path is out of the same shot, skipped.\n')
                                 pass
 
                         else:
-                            print('The RenderImage Path is within the same Task, skipped.\n')
+                            self.printEcho('The RenderImage Path is within the same Task, skipped.\n')
                             pass
                     else:
-                        print('theKeepLibPath is missing !!! {}'.format(theKeepLibPath.parents[-13]))
+                        self.printEcho('theKeepLibPath is missing !!! {}'.format(theKeepLibPath.parents[-13]))
                         pass
 
 
 
-            print("\nkeepVersionPathList:")
+            self.printEcho("\nkeepVersionPathList:")
             for i in keepVersionPathList:
-                print(i)
+                self.printEcho(i)
 
 
-            print("\nallVersionFolders:")
+            self.printEcho("\nallVersionFolders:")
             for i in allVersionPath:
-                print(i)
+                self.printEcho(i)
 
 
             if allVersionPath:
@@ -3573,9 +3586,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     else:
                         outDelList.append(i)
 
-            print('\noutDelList:')
+            self.printEcho('\noutDelList:')
             for i in outDelList:
-                print(i)
+                self.printEcho(i)
 
             return outDelList, outKeepList
 
@@ -3583,10 +3596,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-        print('\n\ninKeepList :::')
+        self.printEcho('\n\ninKeepList :::')
         for i in inKeepList:
-            print(i)
-        print('\n\n\n')
+            self.printEcho(i)
+        self.printEcho('\n\n\n')
 
         inKeepListReverseSort = inKeepList
         inKeepListReverseSort.sort(reverse = True)
@@ -3599,7 +3612,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             #Extract shot name full path
 
             theLibPath = pathlib.Path(i)
-            print('theLibPath :{}'.format(theLibPath))
+            self.printEcho('theLibPath :{}'.format(theLibPath))
             pathComponent = theLibPath.parents[2]
 
             taskName = os.path.basename(theLibPath.parents[1])
@@ -3608,17 +3621,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             justVer, vWithVer = extract_wipNumber(workFileName)
 
 
-            print('pathComponent :{}'.format(pathComponent))
-            print('taskName :{}'.format(taskName))
-            print('shotName :{}'.format(shotName))
-            print('baseName :{}'.format(workFileName))
-            print('justVer :{}'.format(justVer))
+            self.printEcho('pathComponent :{}'.format(pathComponent))
+            self.printEcho('taskName :{}'.format(taskName))
+            self.printEcho('shotName :{}'.format(shotName))
+            self.printEcho('baseName :{}'.format(workFileName))
+            self.printEcho('justVer :{}'.format(justVer))
 
 
             # combine to a nuke script file path
             nukeScriptWIPfileName = shotName + '_' + taskName + '_wip_' + vWithVer + '.nk'
             nukeScriptFilePath = os.path.join(pathComponent, taskName, 'wip', nukeScriptWIPfileName)
-            print('nukeScriptFilePath :{}'.format(nukeScriptFilePath))
+            self.printEcho('nukeScriptFilePath :{}'.format(nukeScriptFilePath))
 
             storeDelList = []
             storeKeepList = []
@@ -3626,15 +3639,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
             if os.path.exists(nukeScriptFilePath) :
-                print('| | | | | .nk nuke Script exist. | | | | | :\n{}\n'.format(nukeScriptFilePath))
+                self.printEcho('| | | | | .nk nuke Script exist. | | | | | :\n{}\n'.format(nukeScriptFilePath))
                 storeDelList, storeKeepList = (toBeDelRenderImagePath(extractReadNodeKeepRenderImagePath(nukeScriptFilePath), pathComponent, taskName))
 
-                print(storeDelList)
-                print(storeKeepList)
+                self.printEcho(storeDelList)
+                self.printEcho(storeKeepList)
 
                 for j in storeKeepList:
-                    print('storeKeepList: {}'.format(j))
-                    print(j)
+                    self.printEcho('storeKeepList: {}'.format(j))
+                    self.printEcho(j)
 
                     if j not in toBeKeepRenderOutputList:
                         toBeKeepRenderOutputList.append(j)
@@ -3644,26 +3657,29 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         toBeDelRenderOutputList.append(j)
 
                 """
-                print('toBeKeepRenderOutputList :')
+                self.printEcho('toBeKeepRenderOutputList :')
                 for i in toBeKeepRenderOutputList:
-                    print(i)
-                print('toBeDelRenderOutputList :')
+                    self.printEcho(i)
+                self.printEcho('toBeDelRenderOutputList :')
                 for i in toBeDelRenderOutputList:
-                    print(i)
+                    self.printEcho(i)
                 """
             elif os.path.exists(nukeScriptFilePath) == False and inKeepListReverseSortCounter > 1:
-                print('x x x x x .nk nuke Script not found. x x x x x : (not largest keepVer comp output, countinue)\n{}\n'.format(nukeScriptFilePath))
+                self.printEcho('x x x x x .nk nuke Script not found. x x x x x : (not largest keepVer comp output, countinue)\n{}\n'.format(nukeScriptFilePath))
             elif os.path.exists(nukeScriptFilePath) == False and inKeepListReverseSortCounter == 1:
-                print('x x x x x .nk nuke Script not found. x x x x x : (LARGEST keepVer comp output, BREAK)\n{}\n'.format(nukeScriptFilePath))
+                self.printEcho('x x x x x .nk nuke Script not found. x x x x x : (LARGEST keepVer comp output, BREAK)\n{}\n'.format(nukeScriptFilePath))
                 break
 
 
 
-        print('\nend of TraceRenderOutputFromKeepVersPath\n')
-        print('toBeKeepRenderOutputList :')
+        self.printEcho('\nend of TraceRenderOutputFromKeepVersPath\n')
+        self.printEcho('toBeKeepRenderOutputList :')
+
+        '''
         for i in toBeKeepRenderOutputList:
-            print(i)
-        print('toBeDelRenderOutputList :')
+            self.printEcho(i)
+        '''
+        self.printEcho('toBeDelRenderOutputList :')
 
 
         # To double confirm no path in Keep List that exist in Del List
@@ -3678,10 +3694,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 toBeDelRenderOutputList.remove(i)
 
 
-
+        '''
         for i in toBeDelRenderOutputList:
-            print(i)
-        print('\n\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><\n\n')
+            self.printEcho(i)
+        self.printEcho('\n\n<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><\n\n')
+        '''
 
         return toBeDelRenderOutputList, toBeKeepRenderOutputList
 
@@ -3700,7 +3717,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         #currentTimeStamp = datetime.datetime.now().timestamp()
         createTimeStamp = os.path.getctime(filePath)
         creation_YYYYmmddHHMMSS = datetime.datetime.fromtimestamp(createTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
-        print(creation_YYYYmmddHHMMSS)
+        self.printEcho(creation_YYYYmmddHHMMSS)
         value_creation_YYYYmmddHHMMSS = datetime.datetime.strptime(creation_YYYYmmddHHMMSS, '%Y-%m-%d %H:%M:%S')
 
         #currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.fromtimestamp(currentTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
@@ -3711,12 +3728,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         # found boundary date (currentTime - keepDays)
         currentTimeStamp = datetime.datetime.now().timestamp()
         currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.fromtimestamp(currentTimeStamp).strftime('%Y-%m-%d %H:%M:%S')
-        print(currentTimeStamp_YYYYmmddHHMMSS)
+        self.printEcho(currentTimeStamp_YYYYmmddHHMMSS)
         value_currentTimeStamp_YYYYmmddHHMMSS = datetime.datetime.strptime(currentTimeStamp_YYYYmmddHHMMSS , '%Y-%m-%d %H:%M:%S')
         DayValue = datetime.timedelta(days=keepDays)
         boundryDate = value_currentTimeStamp_YYYYmmddHHMMSS - DayValue
-        print('boundryDate is : ')
-        print(boundryDate)
+        self.printEcho('boundryDate is : ')
+        self.printEcho(boundryDate)
 
         # Same date count as NOT Earlier, tends to keep for safe.
         if (datetime.datetime.strptime(str(creation_YYYYmmddHHMMSS), '%Y-%m-%d %H:%M:%S') - datetime.datetime.strptime(str(boundryDate), '%Y-%m-%d %H:%M:%S')).days < -1:
@@ -3727,7 +3744,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def cleanUpCheckFolderSize(self, inPathRoot):
         print('\ndef >>>>> cleanUpCheckFolderSize')
-        print(inPathRoot)
+        self.printEcho(inPathRoot)
         sizeUnit = {'Bytes': 1, 'Kilobytes': float(1)/1024, 'Megabytes': float(1)/(1024*1024), 'Gigabytes': float(1)/(1024*1024*1024)}
         total_size = 0
         start_path = inPathRoot  # To get size of current directory
@@ -3757,8 +3774,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
-        print("Directory size in bytes: " + str(total_size))
-        print("Directory size in MB: " + str(total_size * float(sizeUnit['Megabytes'])))
+        self.printEcho("Directory size in bytes: " + str(total_size))
+        self.printEcho("Directory size in MB: " + str(total_size * float(sizeUnit['Megabytes'])))
 
         #msgBox.close()
 
@@ -3781,7 +3798,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             f.writelines('< Keep >' + lines + '\n')
         f.close()
         #print('Text File written to <%s>' %os.path.join(inPath, filename))
-        print('Text File written to <%s>' %inPath)
+        self.printEcho('Text File written to <%s>' %inPath)
 
         libPath = pathlib.Path(inPath)
         os.startfile(libPath.parent)
@@ -3797,7 +3814,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;Python Files (*.py)", options=options)
 
         if fileName:
-            print(fileName)
+            self.printEcho(fileName)
             return fileName
 
 
@@ -3810,7 +3827,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             fileNamePrefix = inName
             fileName, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()", fileNamePrefix,"All Files (*);;Text Files (*.txt)", options=options)
             if fileName:
-                print(fileName)
+                self.printEcho(fileName)
                 return fileName
 
 
@@ -3834,8 +3851,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         answerFolder = QInputDialog.getText(self, 'Input Folder Path', 'Please input the folder path containing ALL toBeDel_xxxxxxx.txt\n\n\n\n***** this is DELETE action. *****\n\n\n',QLineEdit.Normal)
 
-        print(answerFolder[0])
-        print(type(answerFolder[0]))
+        self.printEcho(answerFolder[0])
+        self.printEcho(type(answerFolder[0]))
 
         allFiles = os.listdir(answerFolder[0])
         counter = 0
@@ -3855,7 +3872,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                 moveDestPath, null = QInputDialog.getText(self, 'Input Destination Folder Path', 'Please input the move-destination folder path:',QLineEdit.Normal)
                 moveDestPath = os.path.normpath(moveDestPath)
-                print('moveDestPath :{}'.format(moveDestPath))
+                self.printEcho('moveDestPath :{}'.format(moveDestPath))
 
 
                 inputCheck = QInputDialog.getText(self, 'Double Confirmation', 'If you confirm to batch move all files.\n\n input the following correctly:\n\n"Move, confirm to move all."\n\n\n',QLineEdit.Normal)
@@ -3870,13 +3887,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             doneFolder = os.path.join(answerFolder[0], '_done')
             if not os.path.exists(doneFolder):
                 os.mkdir(doneFolder)
-                print(doneFolder ,  " --- Created ")
+                self.printEcho(doneFolder ,  " --- Created ")
 
 
             for file in allFiles:
 
                 theFile = os.path.join(answerFolder[0], file)
-                print(theFile)
+                self.printEcho(theFile)
 
                 if theFile.endswith('.txt'):
                     f = open(theFile, 'r')
@@ -3888,7 +3905,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                 counter += 1
                                 targetPath = line.lstrip('< del* >').rstrip('\n')
                                 linePaths.append(targetPath)
-                                print(str(counter) + 'line :' + targetPath)
+                                self.printEcho(str(counter) + 'line :' + targetPath)
 
                                 if delConfirm == True:
                                     #ref : https://thispointer.com/python-how-to-delete-a-directory-recursively-using-shutil-rmtree/
@@ -3897,7 +3914,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                                 elif moveConfirm == True:
                                     QApplication.processEvents()
                                     combineMoveDestPath = os.path.join(moveDestPath, targetPath.replace(':', '_', 1))
-                                    print(combineMoveDestPath)
+                                    self.printEcho(combineMoveDestPath)
                                     QApplication.processEvents()
 
                                     #option A, run by shutil. but the UI freeze without repond
@@ -4036,8 +4053,8 @@ class nukeTempWindow(UiNukeTemp.Ui_nukeReadNodeFrameInOut, QMainWindow):
                 FrameInInt = int(self.lineEdit_NewFrameIn.text())
                 FrameOutInt = int(self.lineEdit_NewFrameOut.text())
 
-                print(FrameInInt)
-                print(FrameOutInt)
+                self.printEcho(FrameInInt)
+                self.printEcho(FrameOutInt)
 
                 counter = 0
                 for n in nuke.selectedNodes('Read'):

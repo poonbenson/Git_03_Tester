@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v138.ui'
+## Form generated from reading UI file 'bigKeeperPyUi_newLayout_v139.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -470,22 +470,27 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.label_6)
 
-        self.pushButton_CompLatestRv = QPushButton(self.tab_shotBrowser)
-        self.pushButton_CompLatestRv.setObjectName(u"pushButton_CompLatestRv")
-
-        self.verticalLayout_4.addWidget(self.pushButton_CompLatestRv)
-
         self.pushButton_shotAction = QPushButton(self.tab_shotBrowser)
         self.pushButton_shotAction.setObjectName(u"pushButton_shotAction")
 
         self.verticalLayout_4.addWidget(self.pushButton_shotAction)
 
+        self.pushButton_shotAction2 = QPushButton(self.tab_shotBrowser)
+        self.pushButton_shotAction2.setObjectName(u"pushButton_shotAction2")
+
+        self.verticalLayout_4.addWidget(self.pushButton_shotAction2)
+
         self.listWidget_3 = QListWidget(self.tab_shotBrowser)
         self.listWidget_3.setObjectName(u"listWidget_3")
-        self.listWidget_3.setMinimumSize(QSize(0, 200))
+        self.listWidget_3.setMinimumSize(QSize(0, 100))
         self.listWidget_3.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
 
         self.verticalLayout_4.addWidget(self.listWidget_3)
+
+        self.pushButton_shotAction3 = QPushButton(self.tab_shotBrowser)
+        self.pushButton_shotAction3.setObjectName(u"pushButton_shotAction3")
+
+        self.verticalLayout_4.addWidget(self.pushButton_shotAction3)
 
         self.pushButton_newTask = QPushButton(self.tab_shotBrowser)
         self.pushButton_newTask.setObjectName(u"pushButton_newTask")
@@ -741,6 +746,9 @@ class Ui_MainWindow(object):
         self.toolButton_shotAction.setGeometry(QRect(190, 360, 123, 19))
         sizePolicy3.setHeightForWidth(self.toolButton_shotAction.sizePolicy().hasHeightForWidth())
         self.toolButton_shotAction.setSizePolicy(sizePolicy3)
+        self.pushButton_CompLatestRv = QPushButton(self.tab_developing)
+        self.pushButton_CompLatestRv.setObjectName(u"pushButton_CompLatestRv")
+        self.pushButton_CompLatestRv.setGeometry(QRect(190, 410, 151, 21))
         self.tabWidget.addTab(self.tab_developing, "")
         self.tab_assetBrowser = QWidget()
         self.tab_assetBrowser.setObjectName(u"tab_assetBrowser")
@@ -855,7 +863,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.tabWidget_2.setCurrentIndex(1)
 
 
@@ -1056,7 +1064,7 @@ class Ui_MainWindow(object):
         self.listWidget_1.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_1", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
-        self.pushButton_newSeq.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newTask", None))
+        self.pushButton_newSeq.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newSeq", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_newSeq.setText(QCoreApplication.translate("MainWindow", u"New Sequence", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Shot", None))
@@ -1068,25 +1076,29 @@ class Ui_MainWindow(object):
         self.listWidget_2.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_2", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
-        self.pushButton_newShot.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newTask", None))
+        self.pushButton_newShot.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newShot", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_newShot.setText(QCoreApplication.translate("MainWindow", u"New Shot", None))
 #if QT_CONFIG(tooltip)
-        self.pushButton_newShotBatch.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newTask", None))
+        self.pushButton_newShotBatch.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newShotBatch", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_newShotBatch.setText(QCoreApplication.translate("MainWindow", u"Batch", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Task Shot", None))
-#if QT_CONFIG(tooltip)
-        self.pushButton_CompLatestRv.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_CompLatestRv", None))
-#endif // QT_CONFIG(tooltip)
-        self.pushButton_CompLatestRv.setText(QCoreApplication.translate("MainWindow", u"tmp.RvCompLastVer", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_shotAction.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_shotAction", None))
 #endif // QT_CONFIG(tooltip)
         self.pushButton_shotAction.setText(QCoreApplication.translate("MainWindow", u"Action...", None))
 #if QT_CONFIG(tooltip)
+        self.pushButton_shotAction2.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_shotAction2", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_shotAction2.setText(QCoreApplication.translate("MainWindow", u"Action...", None))
+#if QT_CONFIG(tooltip)
         self.listWidget_3.setToolTip(QCoreApplication.translate("MainWindow", u"listWidget_3", None))
 #endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.pushButton_shotAction3.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_shotAction3", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_shotAction3.setText(QCoreApplication.translate("MainWindow", u"Action...", None))
 #if QT_CONFIG(tooltip)
         self.pushButton_newTask.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_newTask", None))
 #endif // QT_CONFIG(tooltip)
@@ -1142,6 +1154,10 @@ class Ui_MainWindow(object):
         self.toolButton_shotAction.setToolTip(QCoreApplication.translate("MainWindow", u"toolButton_shotAction", None))
 #endif // QT_CONFIG(tooltip)
         self.toolButton_shotAction.setText(QCoreApplication.translate("MainWindow", u"ACTIONS ...", None))
+#if QT_CONFIG(tooltip)
+        self.pushButton_CompLatestRv.setToolTip(QCoreApplication.translate("MainWindow", u"pushButton_CompLatestRv", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_CompLatestRv.setText(QCoreApplication.translate("MainWindow", u"tmp.RvCompLastVer", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_developing), QCoreApplication.translate("MainWindow", u"developing", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"ASSET BROWSER", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Asset Type", None))
