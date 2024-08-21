@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240817C'
+winTitlePrefix = 'BigKeeper_20240821'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -2767,17 +2767,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print('\ndef >>>>> lightPublishCopyAction')
 
         def findSeqBaseName(inReadNodeFilePath):
-            print('\ndef >>>>> findSeqBaseName')
+            #print('\ndef >>>>> findSeqBaseName')
             thePath = pathlib.Path(inReadNodeFilePath)
-            print('inReadNodeFilePath : {}'.format(thePath))
+            #print('inReadNodeFilePath : {}'.format(thePath))
 
             numPadPhase = thePath.stem.split('.')[-1]
             if numPadPhase.startswith('%') or numPadPhase.isnumeric():
                 seqBaseName = str(thePath.stem).rstrip('.'+ numPadPhase)
             else:
                 seqBaseName = thePath.stem
-            print(seqBaseName)
-            print('def findSeqBaseName <<<<<')
+            #print(seqBaseName)
+            #print('def findSeqBaseName <<<<<')
             return seqBaseName
 
         targetBackdrop = nuke.toNode('bigK_lightPublish')
@@ -2843,11 +2843,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             sourceSeqBaseName = findSeqBaseName(sourceReadNodeFilePath)
             print('\n\nsourceSeqBaseName : {}\n\n'.format(sourceSeqBaseName))
 
+            #find original version path to be copied to
+            originalVerNumber = os.path.normpath(sourcePath).split(os.path.sep)[12]
+            print(originalVerNumber)
+
+            #orignalVerNum =
+
             #print(os.path.join(currentTaskPath, 'cache', (str(currentVerNumber).zfill(4)), os.path.basename(sourceReadNodeFilePath.parent)))
-            destinationVerPath = os.path.join(currentTaskPath, 'cache', (str(currentVerNumber).zfill(4)), os.path.basename(sourceReadNodeFilePath.parent))
+            destinationVerPath = os.path.join(currentTaskPath, 'cache', (str(originalVerNumber).zfill(4)), os.path.basename(sourceReadNodeFilePath.parent))
+
 
             listFiles = os.listdir(sourceReadNodeFilePath.parent)
 
+
+            #for copy to under according to Lightpublish.nk ver Number
             targetFiles = []
 
             for file in listFiles:
@@ -2860,6 +2869,34 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     #print(findSeqBaseName(jointFilePath))
                     if findSeqBaseName(jointFilePath) == sourceSeqBaseName:
                         targetFiles.append(libPath)
+                        print('                                      append >>> {}\n'.format(libPath))
+                    else:
+                        print('                                                            Skipped. --- seqBasename not match.\n')
+                        pass
+                else:
+                    print('                                                            Skipped. --- It is a folder\n')
+                    pass
+
+            print('targetFiles :')
+            for line in targetFiles:
+                print(line)
+
+
+
+            '''
+            #for copy to under according to original images ver Number
+            targetFilesDict = {}
+
+            for file in listFiles:
+                jointFilePath = os.path.join(sourceReadNodeFilePath.parent, file)
+                if not os.path.isdir(jointFilePath):
+                    libPath = pathlib.Path(jointFilePath)
+                    #if libPath.stem.startswith(sourceSeqBaseName):
+                    #print(sourceSeqBaseName)
+                    #print('vs')
+                    #print(findSeqBaseName(jointFilePath))
+                    if findSeqBaseName(jointFilePath) == sourceSeqBaseName:
+                        targetFilesDict[libPath] =
                         #print('                                      append >>> {}\n'.format(libPath))
                     else:
                         #print('                                                            Skipped. --- seqBasename not match.\n')
@@ -2871,6 +2908,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             print('targetFiles :')
             for line in targetFiles:
                 print(line)
+            '''
 
 
 
