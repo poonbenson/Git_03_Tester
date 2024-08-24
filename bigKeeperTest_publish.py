@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240822'
+winTitlePrefix = 'BigKeeper_20240823'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -223,6 +223,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.horizontalSlider_echoSwitch.setRange(0,1)
         self.horizontalSlider_echoSwitch.valueChanged.connect(self.printEcho)
         self.horizontalSlider_echoSwitch.valueChanged.connect(self.printEchoUIFeedback)
+        self.horizontalSlider_echoSwitch.valueChanged.connect(self.echoSwitchOtherAction)
 
         self.comboBoxEntries = self.listBigKeeperProject()
         self.comboBoxEntries.sort()
@@ -443,8 +444,25 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_genWriteCompMaster.setText('CompMaster')
         self.pushButton_genWriteCompMasterV.clicked.connect(lambda : self.nukeBornWriteNode('CompMasterToV'))
         self.pushButton_genWriteCompMasterV.setText('CompMaster-V')
+
         self.pushButton_genLightPublishBackdrop.clicked.connect(self.lightPublishBornBackdrop)
-        self.pushButton_LightPublishBackdrop.clicked.connect(self.lightPublishCopyAction)
+        self.pushButton_lightPublishAction.clicked.connect(self.lightPublishCopyAction)
+
+
+        self.pushButton_genCgRenderBackdrop.clicked.connect(self.genCgRenderBackdrop)
+        self.pushButton_genCgRenderBackdrop.setEnabled(False)
+
+        self.pushButton_genOtherBackdrop.clicked.connect(self.genOtherBackdrop)
+        self.pushButton_genOtherBackdrop.setEnabled(False)
+        self.pushButton_FileKnobFreeze.clicked.connect(self.fileKnobFreeze)
+        self.pushButton_FileKnobUnFreeze.clicked.connect(self.fileKnobUnFreeze)
+
+        '''
+        self.label_27.setVisible(False)
+        self.pushButton_genCgRenderBackdrop.setVisible(False)
+        self.pushButton_genOtherBackdrop.setVisible(False)
+        '''
+
 
         #Cmd Tab
         self.pushButton_sortoutfile.clicked.connect(lambda: self.cleanUpCompOutput(self.listWidget_1.selectedItems()))
@@ -470,6 +488,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.updateCurrentOpeningLocationPath()
         self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setTabVisible(2, self.horizontalSlider_echoSwitch.value())
+        self.tabWidget.setTabVisible(3, self.horizontalSlider_echoSwitch.value())
+
+
 
         self.pushButton_shotAction.setText('shotActionMenu')
         self.pushButton_shotAction.setEnabled(False)
@@ -655,6 +677,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         if self.horizontalSlider_echoSwitch.value() == 1:
             print(inText)
+
+    def echoSwitchOtherAction(self):
+        self.tabWidget.setTabVisible(2, self.horizontalSlider_echoSwitch.value())
+        self.tabWidget.setTabVisible(3, self.horizontalSlider_echoSwitch.value())
+
 
     def listWidget_1_receivedList(self, item):
         print('\ndef >>>>> listWidget_1_receivedList')
@@ -2655,11 +2682,54 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         allNode = inNodes
         labelText = 'write' + '\n' + inLabelText
 
-        margin = 100
+        marginHeight = 100
+        marginWidth = 100
         yLabelSpace = 25
         rightOffSetSpace = 20
-        labelFontSize = 20
+        #labelFontSize = 20
+        noteFontSize = 20
         zOrder = 0
+
+        allExistBackdrops = nuke.allNodes(filter='BackdropNode')
+        allExistBackdropsNames = []
+
+        for existBackdrop in allExistBackdrops:
+            allExistBackdropsNames.append(existBackdrop.knob('name').value())
+
+
+        existedSameBackdropNameCounter = 0
+
+        '''
+        for existBackdrop in allExistBackdrops:
+            self.printEcho(existBackdrop.knob('name').value())
+            self.printEcho(type(existBackdrop.knob('name').value()))
+            if existBackdrop.knob('name').value().startswith('bigK_FreezedScnUpdt'):
+                existedSameBackdropNameCounter +=1
+            self.printEcho(existedSameBackdropNameCounter)
+
+        if existedSameBackdropNameCounter < 1:
+            existedSameBackdropNameCounter = ''
+        else:
+            existedSameBackdropNameCounter += 1
+        '''
+        newPrefix = inPrefix + ''
+        #duplicateBackdropExistToken = True
+
+        self.printEcho('start of while loop')
+        loopcounter = 0
+        self.printEcho('1 ' + newPrefix)
+        self.printEcho(allExistBackdropsNames)
+        self.printEcho('2 ' + newPrefix)
+        while newPrefix in allExistBackdropsNames and loopcounter < 20:
+            existedSameBackdropNameCounter += 1
+            newPrefix = inPrefix + str(existedSameBackdropNameCounter)
+            loopcounter += 1
+            self.printEcho(loopcounter)
+            self.printEcho(existedSameBackdropNameCounter)
+            self.printEcho('3' + newPrefix)
+
+        self.printEcho('end of while loop')
+
 
         if inTypeForColor == 'CompMaster':
             baseColor = 2419101951
@@ -2673,9 +2743,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             baseColor = 2060476415
         elif inTypeForColor == 'LightPublish':
             baseColor = 2320101951
-            margin = 200
+            marginHeight = 38
+            marginWidth = 90
             zOrder = -10
             labelText = inLabelText
+        elif inTypeForColor == 'FreezedScnUpdt':
+            baseColor = 16776960
+            marginHeight = 50
+            marginWidth = 90
+            #zOrder = -5
+            yLabelSpace = 30
+            labelText = inLabelText
+            #labelFontSize = 5
+            noteFontColor = 3221488895
+            noteFontSize = 15
 
         allNode = nuke.selectedNode()
         self.printEcho('nodes :' + str(len(allNode)))
@@ -2688,6 +2769,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         ypMax = allNode.ypos()
         ypMin = allNode.ypos()
 
+
         for a in nuke.selectedNodes():
             if a.xpos() > xpMax:
                 xpMax = a.xpos()
@@ -2698,15 +2780,37 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             if a.ypos() < ypMin:
                 ypMin = a.ypos()
 
-        bd = nuke.nodes.BackdropNode(bdwidth=(xpMax-xpMin)+margin , bdheight=(ypMax-ypMin)+ margin + yLabelSpace )
-        bd.setXpos(int(xpMin-margin/2 + rightOffSetSpace * 1.8))
-        bd.setYpos(int(ypMin-margin/2 - yLabelSpace))
+            #marginHeight = 200
+        '''
+        bd = nuke.nodes.BackdropNode(bdwidth=(xpMax-xpMin)+marginWidth , bdheight=(ypMax-ypMin)+ marginHeight + yLabelSpace )
+        bd.setXpos(int(xpMin-marginWidth/2 + rightOffSetSpace * 1.8))
+        bd.setYpos(int(ypMin-marginHeight/2 - yLabelSpace))
 
         bd.knob('tile_color').setValue(baseColor)
         bd.knob('label').setValue(labelText)
-        bd.knob('note_font_size').setValue(20)
+        bd.knob('note_font_size').setValue(noteFontSize)
         bd.knob('name').setValue(inPrefix)
         bd.knob('z_order').setValue(zOrder)
+
+        if inTypeForColor == 'FreezedSceneUpdate':
+            bd.knob('note_font_color').setValue(noteFontColor)
+        '''
+
+
+        bd = nukescripts.nukescripts.autoBackdrop()
+
+        bd.setXpos(int(xpMin-marginWidth/2 + rightOffSetSpace * 1.8))
+        bd.setYpos(int(ypMin-marginHeight/2 - yLabelSpace))
+
+        bd.knob('tile_color').setValue(baseColor)
+        bd.knob('label').setValue(labelText)
+        bd.knob('note_font_size').setValue(noteFontSize)
+        bd.knob('name').setValue('{}'.format(newPrefix))
+        bd.knob('z_order').setValue(zOrder)
+
+        if inTypeForColor == 'FreezedScnUpdt':
+            bd.knob('note_font_color').setValue(noteFontColor)
+
 
         return bd
 
@@ -2951,13 +3055,62 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         print('\ndef >>>>> openCacheFolder')
         os.startfile(os.path.join(self.selProjScnShotTaskPath, self.selTask, 'cache'))
 
+
     def openOutputFolder(self):
         print('\ndef >>>>> openOutputFolder')
         os.startfile(os.path.join(self.selProjScnShotTaskPath, self.selTask, 'output'))
 
 
+    def fileKnobFreeze(self):
+        print('\ndef >>>>> fileKnobFreeze')
+
+        allSelNodes = nuke.selectedNodes()
+        allSelNodesName = []
+
+        for node in allSelNodes:
+            allSelNodesName.append(node['name'].value())
+
+            #lock all the knob('file')
+            node.knob('file').setEnabled(False)
 
 
+        #Then, create backdrop to visually show to user
+        self.printEcho(allSelNodesName)
+        backdropLabel= 'Freezed Scene Update'
+        inType = 'FreezedScnUpdt'
+        Prefix = 'bigK_FreezedScnUpdt'
+        self.nukeBornBackdrop(allSelNodesName, backdropLabel, inType, Prefix)
+
+
+    def fileKnobUnFreeze(self):
+        print('\ndef >>>>> fileKnobUnFreeze')
+
+        allSelNodes = nuke.selectedNodes()
+        allSelBackdrops = nuke.selectedNodes(filter = 'BackdropNode')
+
+        for node in allSelNodes:
+            self.printEcho("node.knob('name').value()")
+            self.printEcho(node.knob('name').value())
+            self.printEcho('node')
+            self.printEcho(node)
+            self.printEcho("type(node)")
+            self.printEcho(type(node))
+            if 'file' in node.knobs():
+                self.printEcho('knob "FILE" exist')
+                node.knob('file').setEnabled(True)
+            else:
+                self.printEcho('knob "FILE" not exsit')
+
+        for backdrop in allSelBackdrops:
+            nuke.delete(backdrop)
+
+
+    def genCgRenderBackdrop(self):
+        print('\ndef >>>>> genCgRenderBackdrop')
+
+
+    def genOtherBackdrop(self):
+        print('\ndef >>>>> genOtherBackdrop')
 
 
 
