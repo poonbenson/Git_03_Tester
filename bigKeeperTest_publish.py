@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240823'
+winTitlePrefix = 'BigKeeper_20240825'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -3096,6 +3096,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho("type(node)")
             self.printEcho(type(node))
             if 'file' in node.knobs():
+                #print("node.knob(file).Enabled():")
+                #print(node.knob('file').enabled())
                 self.printEcho('knob "FILE" exist')
                 node.knob('file').setEnabled(True)
             else:
@@ -3251,7 +3253,11 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho(updatedContent)
 
             os.path.normpath
-            i.knob('file').setValue(updatedContent)
+            if i.knob('file').enabled():
+                self.printEcho("{}'s <file> knob is not locked.".format(i.knob('name').value()))
+                i.knob('file').setValue(updatedContent)
+            else:
+                self.printEcho("{}'s <file> knob is locked.".format(i.knob('name').value()))
 
     def cleanUpCompOutput(self, inScns):
         print('\ndef >>>>> cleanUpCompOutput')
