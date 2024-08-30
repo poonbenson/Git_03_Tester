@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240825'
+winTitlePrefix = 'BigKeeper_20240830'
 
 # path of bigKeeperTest_publish : N:\BigKeeper
 # WIP of bigKeeperTest_publish : I:\iCloud~com~omz-software~Pythonista3\pySide2UI\wip
@@ -342,7 +342,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.pushButton_19.clicked.connect(self.myAction5)
         self.pushButton_Location_2.clicked.connect(self.openCurrentOpeningLocationPath)
-        self.pushButton_versionUp.clicked.connect(self.versionUpSaveWIP)
+        self.pushButton_versionUp.clicked.connect(lambda : self.versionUpSaveWIP(True))
         self.pushButton_versionUp.setStyleSheet("background-color:rgb(204,153,128); color:rgb(136, 77, 85)")
         #self.pushButton_versionUp.setVisible(False)
 
@@ -886,6 +886,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
     def launchSceneUpdate(self):
+        print('\ndef >>>>> launchSceneUpdate')
         if in_maya:
             from daniel import sceneUpdate_maya as susu
         elif in_nuke:
@@ -1252,12 +1253,20 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     nuke.scriptClose() ### pop a dialog instead of close.
                     if nuke.Root().modified() == False:
                         nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
+                        nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
                         self.activateCurrentTab()
 
                 else:
 
                     nuke.scriptClose()
                     nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
+                    #nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
+
+                    try:
+                        nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
+                    except:
+                        self.printEcho('PASS "nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())"')
+                        pass
 
                     # To avoid error message when launchSceneUpdate on a v0000
                     try:
@@ -1265,6 +1274,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         nuke.onScriptLoad(self.launchSceneUpdate())
                         #QMessageBox.information(self, 'Auto Scene Update', 'Check if Scene Update is needed ?')
                     except:
+                        self.printEcho('PASS "nuke.onScriptLoad(self.launchSceneUpdate())"')
                         pass
 
                     self.activateCurrentTab()
@@ -1311,12 +1321,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 if nuke.Root().modified() == False:
                     self.printEcho(os.path.join(bigKInfo.currentPath(), item.text()))
                     nuke.scriptOpen(os.path.join(bigKInfo.currentPath(), item.text()))
+                    nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
                     self.activateCurrentTab()
 
             else:
                 nuke.scriptClose()
                 self.printEcho(os.path.join(bigKInfo.currentPath(), item.text()))
                 nuke.scriptOpen(os.path.join(bigKInfo.currentPath(), item.text()))
+                nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
                 self.activateCurrentTab()
 
 
@@ -1351,6 +1363,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 if nuke.Root().modified() == False:
                     self.printEcho(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
                     nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
+                    nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
                     self.activateCurrentTab()
 
 
@@ -1358,6 +1371,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 nuke.scriptClose()
                 self.printEcho((os.path.join(self.selProjScnShotTaskWIPPath, item.text())))
                 nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, item.text()))
+                nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
                 self.activateCurrentTab()
 
         elif in_houdini:
@@ -1471,7 +1485,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         return listdictProjKey
 
 
-    def versionUpSaveWIP(self, inShowDoneMsgBox = True):
+    def versionUpSaveWIP(self, inShowDoneMsgBox):
         print('\ndef >>>>> versionUpSaveWIP')
         if in_nuke:
             bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
@@ -1485,25 +1499,39 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 self.printEcho('another WIP ver.')
                 self.nukeUpdateMetadataNodeFps()
                 self.nukeUpdateWriteNodeVer()
+                print('1502')
                 nuke.scriptSave()
-
+                print('1504')
                 nukeEnv = nuke.env
                 isAssist = nukeEnv['assist']
+                print(nukeEnv['assist'])
+                print('1508')
 
                 if isAssist:
+                    print('1512')
                     if inShowDoneMsgBox == True:
+                        print('1514')
                         theMessage = 'Be Careful !\nBe Careful !!\nBe Careful !!!\n' + 'Currently in < Nuke Assist >.\n\n' + 'Only <Nuke Script WIP version _v#### > and <fps metadata> are updated.\n\nNone of <Write Nodes> are updated. Therefore :\n\n'+ '     1) Do not render this nuke script verion.\n' + '     2) Before submit render, you must <Version Up> in Nuke or NukeX to align the write node version number.'
                         QMessageBox.information(self, 'WARNING !!! ', theMessage)
+                        print('1516')
                 else:
+                    print('1519')
                     if inShowDoneMsgBox == True:
+                        print('1521')
                         theMessage = 'WIP version up, Done.\n\nbigK_Write nodes --- version numbers aligned.\nbigK_ModifyMetadata nodes --- fps metadata aligned to Project Setting.'
-                        QMessageBox.information(self, 'version up33 ', theMessage)
+                        QMessageBox.information(self, 'version up', theMessage)
+                        print('1523')
+                    print('1524')
+
+                print('1526')
 
 
         elif in_houdini:
             hou.hipFile.saveAndIncrementFileName()
             if inShowDoneMsgBox == True:
                 hou.ui.displayMessage('Done.', buttons=('OK',), default_choice=0, close_choice=0)
+
+        print('1534')
 
 
     def myDialogShow2(self, inTitle = 'inTitle', inMessage = 'inMessage'):
@@ -1856,6 +1884,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         f.close()
 
         nuke.scriptOpen(os.path.join(os.environ['LOCALAPPDATA'], 'bigKeeperPy', 'tmpNukeScript.nk'))
+        nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
         '''
 
     def checkCurrentUnsaveStatus(self):
@@ -1866,11 +1895,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 nuke.scriptClose() ### pop a dialog instead of close.
                 if nuke.Root().modified() == False:
                     nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
+                    nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
 
             else:
 
                 nuke.scriptClose()
                 nuke.scriptOpen(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
+                nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
                 #window.close()
 
     def updateCurrentOpeningLocationPath(self):
@@ -2868,7 +2899,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             self.printEcho(allSelNodesName)
 
-            backdropLabel= 'for LightPublish'
+            backdropLabel= 'bigK_LightPublish'
             inType = 'LightPublish'
             Prefix = 'bigK_lightPublish'
 
@@ -2906,8 +2937,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         copySourcePaths = []
         for node in nodesInBackdrop:
-            self.printEcho(node['file'].value())
-            copySourcePaths.append(node['file'].value())
+            if 'file' in node.knobs():
+                self.printEcho(node['file'].value())
+                copySourcePaths.append(node['file'].value())
 
         self.versionUpSaveWIP(False)
 
@@ -3072,11 +3104,16 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             #lock all the knob('file')
             node.knob('file').setEnabled(False)
+            node.knob('note_font_color').setValue(3221488895)
+            if node.knob('label').value() == '':
+                node.knob('label').setValue('\n{}'.format('bigK_FreezedScnUpdt'))
+            else:
+                node.knob('label').setValue('{}\n\n{}'.format(node.knob('label').value(), 'bigK_FreezedScnUpdt'))
 
 
         #Then, create backdrop to visually show to user
         self.printEcho(allSelNodesName)
-        backdropLabel= 'Freezed Scene Update'
+        backdropLabel= 'bigK_FreezedScnUpdt'
         inType = 'FreezedScnUpdt'
         Prefix = 'bigK_FreezedScnUpdt'
         self.nukeBornBackdrop(allSelNodesName, backdropLabel, inType, Prefix)
@@ -3088,23 +3125,55 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         allSelNodes = nuke.selectedNodes()
         allSelBackdrops = nuke.selectedNodes(filter = 'BackdropNode')
 
-        for node in allSelNodes:
-            self.printEcho("node.knob('name').value()")
-            self.printEcho(node.knob('name').value())
-            self.printEcho('node')
-            self.printEcho(node)
-            self.printEcho("type(node)")
-            self.printEcho(type(node))
-            if 'file' in node.knobs():
-                #print("node.knob(file).Enabled():")
-                #print(node.knob('file').enabled())
-                self.printEcho('knob "FILE" exist')
-                node.knob('file').setEnabled(True)
-            else:
-                self.printEcho('knob "FILE" not exsit')
+        if len(allSelBackdrops) > 0:
 
-        for backdrop in allSelBackdrops:
-            nuke.delete(backdrop)
+            for node in allSelNodes:
+                self.printEcho("node.knob('name').value()")
+                self.printEcho(node.knob('name').value())
+                self.printEcho('node')
+                self.printEcho(node)
+                self.printEcho("type(node)")
+                self.printEcho(type(node))
+                if 'file' in node.knobs():
+                    #print("node.knob(file).Enabled():")
+                    #print(node.knob('file').enabled())
+                    self.printEcho('knob "FILE" exist')
+                    node.knob('file').setEnabled(True)
+                    node.knob('note_font_color').setValue(0)
+
+                    #remove bigK_FreezedScnUpdt from label
+                    newLabel = node.knob('label').value().replace('bigK_FreezedScnUpdt', '')
+                    node.knob('label').setValue(newLabel.rstrip())
+
+                else:
+                    self.printEcho('knob "FILE" not exsit')
+
+            for backdrop in allSelBackdrops:
+                nuke.delete(backdrop)
+        else:
+            QMessageBox.information(self, 'No Backdrop is selected.', 'No Backdrop is selected.')
+
+
+    def nukeFileKnobFreezeScriptLoad(self):
+        print('\ndef >>>>> nukeFileKnobFreezeScriptLoad')
+
+        allNodes = nuke.allNodes()
+
+        self.printEcho(allNodes)
+
+        for node in allNodes:
+            self.printEcho(node.knob('name').value())
+            if 'file' in node.knobs():
+                self.printEcho('have FILE knob')
+                self.printEcho('label value :{}'.format(node.knob('label').value()))
+                if 'bigK_FreezedScnUpdt' in node.knob('label').value():
+                    node.knob('file').setEnabled(False)
+                    node.knob('note_font_color').setValue(0)
+            else:
+                self.printEcho('have NOT FILE knob xxxxx')
+
+        print('\ndef >>>>> nukeFileKnobFreezeScriptLoad <<<<<')
+
 
 
     def genCgRenderBackdrop(self):
@@ -3121,6 +3190,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
     def nukeUpdateWriteNodeVer(self):
         print('\ndef >>>>> nukeUpdateWriteNodeVer')
+        print('3189')
         # This function is intentionally read and update the path data according to the current content, instead of using bigkeeperinfo toolkit. To avoid unwanted overwrite data.
 
         # check if it is in Nuke Assist
@@ -3252,12 +3322,13 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.printEcho('updatedContent :')
             self.printEcho(updatedContent)
 
-            os.path.normpath
             if i.knob('file').enabled():
                 self.printEcho("{}'s <file> knob is not locked.".format(i.knob('name').value()))
                 i.knob('file').setValue(updatedContent)
             else:
                 self.printEcho("{}'s <file> knob is locked.".format(i.knob('name').value()))
+
+        print('3326')
 
     def cleanUpCompOutput(self, inScns):
         print('\ndef >>>>> cleanUpCompOutput')
