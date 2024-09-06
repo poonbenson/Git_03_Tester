@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240830'
+winTitlePrefix = 'BigKeeper_20240906'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -88,15 +88,8 @@ else:
     uiPath = os.path.join(pathOfRelease, 'ui')
     iconPath = os.path.join(pathOfRelease, 'icon')
 
-##println('line52')
-##println(CurrentSoftwareName)
-##println('line54')
-
 import bigKeeperInfoGlobal_published
 
-##println('line58')
-##println(CurrentSoftwareName)
-##println('line60')
 #bigKInfo = bigKeeperInfoGlobal_published.bigKeepCLASS()
 
 # To import compiled UI that created from QT Designer
@@ -259,9 +252,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.listWidget_2.itemClicked.connect(self.listWidget_3_appear)
         self.listWidget_2.setSortingEnabled(True)
 
+        self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
         #self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3B_action)
         self.listWidget_3.itemDoubleClicked.connect(self.listWidget_3C_action)
-        self.listWidget_3.itemClicked.connect(self.listWidget_shotTask_action)
         self.listWidget_3.setSortingEnabled(True)
         self.pushButton_listWidget1Refresh.clicked.connect(self.listWidget_1_appear)
 
@@ -954,82 +947,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         os.startfile(os.path.join(thePath, theLastPath))
 
 
-    """
-    def loopQMessage(self):
-        theMsg = ''
-        QMessageBox.information(self, 'message', theMsg)
-        for i in range(10):
-            println(i)
-            theMsg = str(i)
-            time.sleep(1)
-
-    '''def QMessageLoopTest(self):
-        self.msgBox = QMessageBox(self)
-        self.msgBox.setWindowTitle("Title")
-        self.msgBox.setIcon(QMessageBox.Warning)
-        self.msgBox.setText("Start")
-        self.msgBox.show()
-
-        for x in range(100):
-            self.msgBox.setText(str(x+1))
-            loop = QEventLoop()
-            QTimer.singleShot(1000, loop.quit)
-            loop.exec_()'''
-
-    def handleButton(self, inPathRoot):
-        self.msgBox = QMessageBox(self)
-        self.msgBox.setWindowTitle("Title")
-        self.msgBox.setIcon(QMessageBox.Warning)
-        self.msgBox.setText("Start")
-        self.msgBox.show()
-        start_path = inPathRoot
-        start_path = r'N:\mnt\job\19901BigPicture_TestProj'
-        total_size = 0
-
-        loop = QEventLoop()
-        for path, dirs, files in os.walk(start_path):
-
-            for f in files:
-                fp = os.path.join(path, f)
-                fileSize = os.path.getsize(fp)
-                total_size += fileSize
-                #println('\r>> total_size : %d' %total_size, end='', flush = True)
-                self.msgBox.setText(str(total_size))
-        loop.exec_()
-        loop.quit
-
-    def loopMessage2(self):
-        loopWin = QMainWindow(self)
-        loopWin.setWindowTitle('loop Win')
-
-
-        label1 = QLabel('abc abc')
-        label1.setAlignment(Qt.AlignCenter)
-        loopWin.setCentralWidget(label1)
-
-        loopWin.show()
-
-        for i in range(999999):
-            println(i)
-            if i%199 == 0 :
-                println('199')
-                label1.setText(str(i))
-
-        '''#start_path = inPathRoot
-        start_path = r'N:\mnt\job\19901BigPicture_TestProj'
-        total_size = 0
-
-        for path, dirs, files in os.walk(start_path):
-
-            for f in files:
-                fp = os.path.join(path, f)
-                fileSize = os.path.getsize(fp)
-                total_size += fileSize
-                println('\r>> total_size : %d' %total_size, end='', flush = True)
-                label1.setText(str(total_size))'''
-
-    """
-
     def activateCurrentTab(self):
         println('\ndef >>>>> activateCurrentTab')
         self.tabWidget.setCurrentIndex(0)
@@ -1039,16 +956,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def initializeMainWindow(self):
         pass
 
-
-    '''
-    def comboBoxAction1(self, item):
-        self.comboBoxAction1ReceiveItem = item
-        println("my comboBoxAction1")
-        println(type(self.comboBoxAction1ReceiveItem))
-        println(self.comboBoxAction1ReceiveItem)
-        self.listWidget_2.clear()
-        return self.comboBoxAction1ReceiveItem
-    '''
 
     def listWidget_1_appear(self, item):
         println('\ndef >>>>> listWidget_1_appear ---Sequence')
@@ -1074,7 +981,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_shotAction.setEnabled(False)
         self.pushButton_shotAction2.setEnabled(False)
         self.pushButton_shotAction3.setEnabled(False)
-
 
 
     def comboBoxAction2(self, item):
@@ -1239,9 +1145,12 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
     def openLastestWIP(self):
         println('\ndef >>>>> openLastestWIP')
 
+
         self.listFile = self.listOutFilesInFolder()
         self.listFile.sort()
-        self.printEcho(self.listFile[-1])
+
+
+        #self.printEcho(self.listFile[-1])
         self.wrongFormatUi.listWidget.clear()
         if self.selProj in nukeWrongFormatProj:
             self.printEcho('WRONG WRONG WRONG')
@@ -1253,6 +1162,17 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         else:
             if in_nuke:
+
+                '''
+                existingLargestWipFileFullPath = os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1])
+                self.printEcho('existingLargestWipFileFullPath : {}'.format(existingLargestWipFileFullPath))
+                if os.path.getsize(existingLargestWipFileFullPath) == 0 and existingLargestWipFileFullPath.endswith('_v0000.nk'):
+                    #os.remove(existingLargestWipFileFullPath)
+                    noNeedSceneUpdateToken = True
+                    self.printEcho('Deleted : {}'.format(existingLargestWipFileFullPath))
+                '''
+
+
                 self.tabWidget.setCurrentIndex(0)
                 if nuke.Root().modified() == True:
                     self.printEcho('current changes have not yet been saved!')
@@ -1275,6 +1195,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                         pass
 
                     # To avoid error message when launchSceneUpdate on a v0000
+                    #if noNeedSceneUpdateToken:
                     try:
                         #disabled this upon Apple and Sally request for a heavy shot.
                         nuke.onScriptLoad(self.launchSceneUpdate())
@@ -1285,6 +1206,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                     self.activateCurrentTab()
                     #window.close()
+
             elif in_houdini:
                     hou.hipFile.load(os.path.join(self.selProjScnShotTaskWIPPath, self.listFile[-1]))
                     self.activateCurrentTab()
@@ -1297,12 +1219,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.updateCurrentOpeningLocationPath()
 
-
-    '''def initializeReviveListView(self):
-        println('\ndef >>>>> initializeReviveListView')
-        self.reviveUi.listWidget.itemDoubleClicked.connect(self.reviveOpenAction)
-        self.COUNTinitializeReviveListView += 1
-        println(self.COUNTinitializeReviveListView)'''
 
     def reviveAction(self):
         println('\ndef >>>>> reviveAction')
@@ -1343,7 +1259,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.activateCurrentTab()
 
 
-    def listOutFilesInFolder(self):
+    def listOutFilesInFolder(self, v0000Del = False):
         print ('\ndef >>>>> listOutFilesInFolder')
         fileList = os.listdir(self.selProjScnShotTaskWIPPath)
         listFile = []
@@ -1353,6 +1269,15 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     listFile.append(i)
         self.printEcho(r'listFile in listOutFilesInFolder:')
         self.printEcho(listFile)
+
+        if len(listFile) > 0 and v0000Del == True:
+            existingLargestWipFileFullPath = os.path.join(self.selProjScnShotTaskWIPPath, listFile[-1])
+            self.printEcho('existingLargestWipFileFullPath : {}'.format(existingLargestWipFileFullPath))
+            if os.path.getsize(existingLargestWipFileFullPath) == 0 and existingLargestWipFileFullPath.endswith('_v0000.nk'):
+                os.remove(existingLargestWipFileFullPath)
+                self.printEcho('Deleted : {}'.format(existingLargestWipFileFullPath))
+                listFile.remove(listFile[-1])
+
         return listFile
 
 
@@ -1403,6 +1328,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.pushButton_shotAction.setEnabled(True)
         self.pushButton_shotAction2.setEnabled(True)
         self.pushButton_shotAction3.setEnabled(True)
+
+        self.listFile = self.listOutFilesInFolder(True)
+        self.listFile.sort()
 
         #return item
 
@@ -1545,6 +1473,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         self.dialogUi.setWindowTitle(inTitle)
         self.dialogUi.label.setText(inMessage)
+        # other initialization in def >>> initializeNewWIPDialogWindow
 
         self.dialogUi.show()
 
@@ -1809,6 +1738,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         newWipName = (self.selShot + "_" + self.selTask + "_" + self.subDict[self.selProjWipCode] + "_v0000" + wipExtension)
         self.printEcho(newWipName)
 
+        println()
+
         if nuke.Root().modified() == True:
             self.printEcho('current changes have not yet been saved!')
             nuke.scriptClose() ### pop a dialog instead of close.
@@ -1820,7 +1751,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                 self.dialogUi.close()
                 self.openLastestWIP()
+
+                println()
         else:
+            println()
             thepath = os.path.join(self.selProjScnShotTaskWIPPath, newWipName)
             f = open(thepath, 'w')
             f.close()
@@ -1829,6 +1763,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.openLastestWIP()
             self.updateCurrentOpeningLocationPath()
 
+        println()
         sys.path.append(r'N:\bpPipeline\bigKeeperPy\py\externalPyModule\compTeamNukePy')
         import projectRoot_published
         projectRoot_published.projectSetting()
@@ -1838,14 +1773,29 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
 
 
+
+
     def useCurrentWIP(self):
         println('\ndef >>>>> useCurrentWIP')
 
+        self.printEcho('bigKeeperCacheFolderPath :{}'.format(bigKeeperCacheFolderPath))
+
+
+        if os.path.exists(os.path.join(bigKeeperCacheFolderPath, 'nukeTempSaveB4NewUseCurrent.nk')):
+            os.remove(os.path.join(bigKeeperCacheFolderPath, 'nukeTempSaveB4NewUseCurrent.nk'))
+        nuke.scriptSaveAs(os.path.join(bigKeeperCacheFolderPath, 'nukeTempSaveB4NewUseCurrent.nk'))
+
+
+        """
         if nuke.Root().modified() == True:
+            println()
             self.printEcho('current changes have not yet been saved!')
             nuke.scriptClose() ### pop a dialog instead of close.
+
+            '''
             if nuke.Root().modified() == False:
 
+                println()
                 self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, self.selTask, self.subDict[self.selProjWipCode])
                 self.printEcho(self.selProjScnShotTaskWIPPath)
 
@@ -1859,7 +1809,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 self.printEcho(nuke.root()['name'].value())
                 self.printEcho(os.path.dirname( nuke.root().name() ))
                 self.dialogUi.close()
+
+            '''
+
+
         else:
+
+            println()
+            println('bigKeeperCacheFolderPath :{}'.format(bigKeeperCacheFolderPath))
             self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, self.selTask, self.subDict[self.selProjWipCode])
             self.printEcho(self.selProjScnShotTaskWIPPath)
 
@@ -1875,6 +1832,27 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             self.dialogUi.close()
 
             self.updateCurrentOpeningLocationPath()
+        """
+
+        self.printEcho('bigKeeperCacheFolderPath :{}'.format(bigKeeperCacheFolderPath))
+        self.selProjScnShotTaskWIPPath = os.path.join(self.selProjScnShotTaskPath, self.selTask, self.subDict[self.selProjWipCode])
+        self.printEcho(self.selProjScnShotTaskWIPPath)
+
+
+        newWipName = (self.selShot + "_" + self.selTask + "_" + self.subDict[self.selProjWipCode] + "_v0000" + wipExtension)
+        self.printEcho(newWipName)
+        saveName = os.path.join(self.selProjScnShotTaskWIPPath,newWipName)
+        self.printEcho(saveName)
+        nuke.scriptSaveAs(saveName)
+
+        self.printEcho(nuke.root()['name'].value())
+        self.printEcho(os.path.dirname( nuke.root().name() ))
+        self.dialogUi.close()
+
+        self.updateCurrentOpeningLocationPath()
+
+        QMessageBox.information(self, 'New Wip with Used Current', 'New WIP in new task < {} > created.'.format(self.selTask))
+
 
     def pretendCloseNukeScript(self):
         println('\ndef >>>>> pretendCloseNukeScript')
@@ -2123,14 +2101,6 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
             # This function is to limit only activate for EXR format. Due to current ability that other format seems have color issue when create RV session by text pad hacking. Should tackle later.
             println('\n   def >>>>> checkExrOnly')
             allFiles = os.listdir(inPath)
-
-            '''
-            check1stFrame = allFiles[0].split('.')
-            if check1stFrame[-1] == 'exr' or check1stFrame[-1] == 'EXR':
-                exrFormat = True
-            else:
-                exrFormat = False
-            '''
 
             for i in allFiles:
                 if i.split('.')[-1] == 'exr' or i.split('.')[-1] == 'EXR':
@@ -4329,8 +4299,6 @@ class nukeAskKeywordWindow(UiPreset.Ui_MainWindow, QMainWindow):
         println('my nukeAskKeywordWindow - __init__')
         #self.setWindowModality(Qt.ApplicationModal)
         self.setupUi(self)
-
-
 
 
 
