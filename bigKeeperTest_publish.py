@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240906'
+winTitlePrefix = 'BigKeeper_20240907'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -2662,7 +2662,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     for i in allNewNodes:
                         i.setSelected(True)
 
-                    newBD = self.nukeBornBackdrop(allNewNodes, backdropLabel, inType, '')
+                    newBD = self.nukeBornBackdrop(allNewNodes, backdropLabel, inType, 'BackdropNode')
 
                     self.printEcho('original After:::')
                 else:
@@ -2913,7 +2913,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
         copySourcePaths = []
         for node in nodesInBackdrop:
-            if 'file' in node.knobs():
+            self.printEcho('node class : {}'.format(node.Class()))
+            if 'file' in node.knobs() and node.Class() != 'Viewer':
                 self.printEcho(node['file'].value())
                 copySourcePaths.append(node['file'].value())
 
