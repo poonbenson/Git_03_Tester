@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240907'
+winTitlePrefix = 'BigKeeper_20240909'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -2936,6 +2936,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         totalPaths = len(copySourcePaths)
         counter = 0
 
+        start_time = time.time()
+
         ''' #replaced
         for sourcePath in copySourcePaths:
             libPath = pathlib.Path(sourcePath)
@@ -2953,7 +2955,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         '''
 
         for sourcePath in copySourcePaths:
-            self.printEcho('\n\n\n\n\n************************************************')
+            self.printEcho('\n\n\n\n\n************************************************\n***\n***\n***\n***\n***\n***\n***\n***        START        \n***\n***\n***\n***\n***\n***\n***\n************************************************\n\n\n\n')
             sourceReadNodeFilePath = pathlib.Path(sourcePath)
             self.printEcho(sourceReadNodeFilePath)
             self.printEcho(sourceReadNodeFilePath.parent)
@@ -3045,19 +3047,41 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             counter += 1
             for copyFile in targetFiles:
-                msgBox.setText('Publishing < {} of {} >:\n\n <......\{}\{}>\n\n{}'.format(counter, totalPaths, os.path.basename(sourceReadNodeFilePath.parent.parent), os.path.basename(sourceReadNodeFilePath.parent), copyFile))
-                QApplication.processEvents()
-                #destinationPath = shutil.copytree(sourceReadNodeFilePath.parent, destinationVerPath)
-                self.printEcho(destinationVerPath)
-                destinationPath = shutil.copy(copyFile, destinationVerPath)
-                QApplication.processEvents()
-            self.printEcho('<<< publish-copy is done. {}'.format(destinationPath))
+
+                # compare if the existing file are the same SIZE and SAME MODIFIED TIME
+                assumeExistFile = os.path.join(destinationVerPath, os.path.basename(copyFile))
+                if os.path.isfile(assumeExistFile):
+                    if self.comparefileSizeModifytime(copyFile, assumeExistFile) == 'same':
+                        self.printEcho('existFile with same SIZE and ModifyTIME, skipped copy.')
+                else:
+                    msgBox.setText('Publishing < {} of {} >:\n\n <......\{}\{}>\n\n{}'.format(counter, totalPaths, os.path.basename(sourceReadNodeFilePath.parent.parent), os.path.basename(sourceReadNodeFilePath.parent), copyFile))
+                    QApplication.processEvents()
+                    #destinationPath = shutil.copytree(sourceReadNodeFilePath.parent, destinationVerPath)
+                    self.printEcho('destinationVerPath : {}'.format(destinationVerPath))
+                    destinationPath = shutil.copy2(copyFile, destinationVerPath)
+                    QApplication.processEvents()
+
+                self.printEcho('<<< publish-copy of this layer is done. {}'.format(destinationVerPath))
 
 
         QApplication.processEvents()
 
-        QMessageBox.information(self, 'message', '< {} of {} > Publish-Copy done.'.format(counter, totalPaths))
+        end_time = time.time()
+        QMessageBox.information(self, 'message', '< {} of {} > Publish-Copy done. ({} seconds)'.format(counter, totalPaths, round (end_time - start_time, 2)))
         msgBox.close()
+
+
+    def comparefileSizeModifytime(self, inFile1, inFile2):
+        stat1 = os.stat(inFile1)
+        stat2 = os.stat(inFile2)
+
+        # Compare file sizes
+        if stat1.st_size != stat2.st_size:
+            return 'diff size'
+        elif stat1.st_mtime != stat2.st_mtime:
+            return 'diff mtime'
+        else:
+            return 'same'
 
 
     def openCacheFolder(self):
