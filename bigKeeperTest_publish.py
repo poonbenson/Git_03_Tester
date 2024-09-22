@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240909'
+winTitlePrefix = 'BigKeeper_20240922'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -1660,10 +1660,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         passToken = False
         while passToken == False:
             inputCheck, ok = QInputDialog.getText(self, 'New Shot', 'New Shot Name :',QLineEdit.Normal)
-            self.printEcho(inputCheck[0])
+            self.printEcho(inputCheck)
 
-            if inputCheck[0] and ok:
-                newPath = os.path.join(self.selProjScnShotPath, inputCheck[0])
+            if inputCheck and ok:
+                newPath = os.path.join(self.selProjScnShotPath, inputCheck)
 
                 if os.path.isdir(newPath) == True:
                     QMessageBox.information(self, 'Ooops!', 'Shot Name already exists.')
@@ -1674,7 +1674,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(theCmd)
         os.system(theCmd)
 
-        self.listWidget_2.addItem(inputCheck[0])
+        self.listWidget_2.addItem(inputCheck)
 
     def newShotCreateBatchAction(self):
         println('def >>>>> newShotCreateBatchAction')
@@ -1710,10 +1710,10 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         passToken = False
         while passToken == False:
             inputCheck, ok = QInputDialog.getText(self, 'New Sequence', 'New Sequence Name :',QLineEdit.Normal)
-            self.printEcho(inputCheck[0])
+            self.printEcho(inputCheck)
 
-            if inputCheck[0] and ok:
-                newPath = os.path.join(self.selProjScnPath, inputCheck[0])
+            if inputCheck and ok:
+                newPath = os.path.join(self.selProjScnPath, inputCheck)
 
                 if os.path.isdir(newPath) == True:
                     QMessageBox.information(self, 'Ooops!', 'Sequence Name already exists.')
@@ -1724,7 +1724,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho(theCmd)
         os.system(theCmd)
 
-        self.listWidget_1.addItem(inputCheck[0])
+        self.listWidget_1.addItem(inputCheck)
 
 
 
