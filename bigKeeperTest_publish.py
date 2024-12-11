@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20241211B'
+winTitlePrefix = 'BigKeeper_20241211C'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -3242,7 +3242,9 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
             # Cancel the above procedure of sorting out Disable Write Node. After discuss with Apple and Lik.
             mergePrefix = dedictatedPrefix + '_' + nodeClassName + '_'
-            if i.name()[0:len(mergePrefix)] == mergePrefix:
+            #if i.name()[0:len(mergePrefix)] == dedictatedPrefix:
+
+            if i.name()[0:len(dedictatedPrefix)] == dedictatedPrefix and i.Class() == 'Write':
                 sameNodeNameList.append(i.name())
                 #create a list containing "node" instead of nodeName, for coding convinient
                 allFilteredNodes.append(nuke.toNode(i.name()))
