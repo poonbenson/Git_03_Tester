@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20241211'
+winTitlePrefix = 'BigKeeper_20241211B'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -2565,6 +2565,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 if inType == 'CompMaster':
                     self.printEcho(inType)
 
+                    answerName = inType
                     answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
                     frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
                     verFolder = 'v' + str(bigKInfo.currentThisWipVerNum()).zfill(4)
@@ -2577,6 +2578,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 elif inType == 'CompMasterToV':
                     self.printEcho(inType)
 
+                    answerName = inType
                     answerSuffix, readyToCreate = QInputDialog.getText(self, 'Suffix', 'Suffix : (empty if not needed.)', QLineEdit.Normal, bigKInfo.currentCompIniSuffix())
                     frameName = str(bigKInfo.currentShot()) + answerSuffix + '.%04d' + '.exr'
                     vDriveFolder = self.vDrivePathRead(os.path.join(bigKInfo.currentProjWorkPath(), 'bigPathsProject.ini'), 'BIGPATHS', 'vOutput')
@@ -2639,7 +2641,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                     if readyToCreate :
                         #newCreatedNodeMetadata = self.nukeBornBigKNode('bigK', 'ModifyMetaData')
                         newCreatedNodeMetadata = self.nukeBornMetadataNode()
-                        newCreatedNode = self.nukeBornBigKNode('bigK', 'Write')
+                        newCreatedNode = self.nukeBornBigKNode('bigK' +  '_' + answerName, 'Write')
                         newCreatedNode.setInput(0, newCreatedNodeMetadata)
                         newCreatedNode.knob('channels').setValue('rgba')
 
