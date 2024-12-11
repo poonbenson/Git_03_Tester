@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20240922'
+winTitlePrefix = 'BigKeeper_20241211'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -2727,7 +2727,8 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
         self.printEcho('1 ' + newPrefix)
         self.printEcho(allExistBackdropsNames)
         self.printEcho('2 ' + newPrefix)
-        while newPrefix in allExistBackdropsNames and loopcounter < 20:
+        #while newPrefix in allExistBackdropsNames and loopcounter < 20:
+        while newPrefix in allExistBackdropsNames and loopcounter < len(allExistBackdropsNames):
             existedSameBackdropNameCounter += 1
             newPrefix = inPrefix + str(existedSameBackdropNameCounter)
             loopcounter += 1
