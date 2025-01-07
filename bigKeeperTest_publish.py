@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20241211C'
+winTitlePrefix = 'BigKeeper_20241230'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -3425,7 +3425,7 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
 
                         totalSize = 0
 
-                        self.printEcho()
+                        print()
 
 
 
@@ -3444,14 +3444,14 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                             msg = 'Path : ' + str(i) + '     Size in MB : ' + str(size/1024/1024)
                             msgBox.setText(msg)
 
-                        self.printEcho()
+                        print()
                         '''println('toBeDelList is :')
                         println(toBeDelList)
                         for i in toBeDelList:
                             println(i)
                         '''
 
-                        self.printEcho()
+                        print()
                         self.printEcho('Keeping %d Latest Vers ---OR--- verions within %d Latest Days (%s)' %(keepVers, keepDays, str(boundryDate)))
                         self.printEcho('totalSize is :')
                         self.printEcho('totalSize in MB (to be deleted) : ' + str(totalSize/1024/1024))
