@@ -1,4 +1,4 @@
-winTitlePrefix = 'BigKeeper_20241230'
+winTitlePrefix = 'BigKeeper_20250114'
 
 from inspect import currentframe
 def println(inContent = '-'):
@@ -1243,14 +1243,42 @@ class BigMainWindow(UiPy.Ui_MainWindow, QMainWindow):
                 if nuke.Root().modified() == False:
                     self.printEcho(os.path.join(bigKInfo.currentPath(), item.text()))
                     nuke.scriptOpen(os.path.join(bigKInfo.currentPath(), item.text()))
-                    nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
+
+                    try:
+                        nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
+                    except:
+                        self.printEcho('PASS "nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())"')
+                        pass
+
+                    try:
+                        #disabled this upon Apple and Sally request for a heavy shot.
+                        nuke.onScriptLoad(self.launchSceneUpdate())
+                        #QMessageBox.information(self, 'Auto Scene Update', 'Check if Scene Update is needed ?')
+                    except:
+                        self.printEcho('PASS "nuke.onScriptLoad(self.launchSceneUpdate())"')
+                        pass
+
                     self.activateCurrentTab()
 
             else:
                 nuke.scriptClose()
                 self.printEcho(os.path.join(bigKInfo.currentPath(), item.text()))
                 nuke.scriptOpen(os.path.join(bigKInfo.currentPath(), item.text()))
-                nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
+
+                try:
+                    nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())
+                except:
+                    self.printEcho('PASS "nuke.onScriptLoad(self.nukeFileKnobFreezeScriptLoad())"')
+                    pass
+
+                try:
+                    #disabled this upon Apple and Sally request for a heavy shot.
+                    nuke.onScriptLoad(self.launchSceneUpdate())
+                    #QMessageBox.information(self, 'Auto Scene Update', 'Check if Scene Update is needed ?')
+                except:
+                    self.printEcho('PASS "nuke.onScriptLoad(self.launchSceneUpdate())"')
+                    pass
+
                 self.activateCurrentTab()
 
 
